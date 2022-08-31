@@ -18,17 +18,16 @@ const DataTable = () => {
   );
   const { data: signer, isError, isLoading } = useSigner();
     console.log(signer)
-    const provider = useProvider()
+    
+    const provider = useProvider();
   // const staking = new ethers.Contract(value.stakingAddress, stakingAbi, signer);
   // const token = new ethers.Contract(value.stakingToken, tokenAbi, signer);
   const staking = useContract({
     addressOrName: value.stakingAddress,
     contractInterface: stakingAbi,
-    signerOrProvider: provider,
+
   });
 
-
-  console.log(staking)
 
   const token = useContract({
     addressOrName: value.tokenAddress,
@@ -56,7 +55,8 @@ const DataTable = () => {
   const [devaddr, setDevaddr] = useState();
   const [owner, setOwner] = useState();
   const [pendingqni, setPendingqni] = useState();
-  const [error, setError] = useState();
+  const [errors, setError] = useState();
+
 
   useEffect(() => {
     refreshData(signer);
