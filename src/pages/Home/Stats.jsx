@@ -55,10 +55,13 @@ const Stats = () => {
     }
   }
 
+  
+
   async function fetchprice() {
     try {
       let rpcUrl = value.rpcUrl;
       let provider_ = new ethers.providers.JsonRpcProvider(rpcUrl);
+      console.log(provider_)
       let router = new ethers.Contract(value.router, routerAbi, provider_);
       //   const router = useContract({
       //     addressOrName: value.router,
@@ -68,6 +71,7 @@ const Stats = () => {
 
       //needs to be sorted
       const tokenIn = value.qniTokenAddress;
+      console.log(tokenIn)
       const tokenOut = value.wbnb;
       const amountIn = ethers.utils.parseUnits("1", 5);
       let amounts = await router.getAmountsOut(amountIn, [tokenIn, tokenOut]);
@@ -76,7 +80,7 @@ const Stats = () => {
       console.log(`
             tokenIn: ${ethers.utils.formatEther(
               amountIn.toString()
-            )} ${tokenIn} (safeearn)
+            )} ${tokenIn} (QNI)
             tokenOut: ${ethers.utils.formatEther(
               amounts2[1].toString()
             )} ${busd} (BUSD)

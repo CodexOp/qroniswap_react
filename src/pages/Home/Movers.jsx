@@ -184,7 +184,7 @@ const Movers = () => {
                   <BoxContent>
                     <div className="row">
                       <div className="col-6">
-                        {item.count && <h3>{item.count}</h3>}
+                        {item.count && <h3>${item.count}</h3>}
                         {item.progress && (
                           <p className="mb-0">{item.progress}</p>
                         )}

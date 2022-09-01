@@ -27,8 +27,14 @@ const DataTable = () => {
     contractInterface: stakingAbi,
   });
 
+
+  const rtee = async() => {
+    console.log(await staking.devaddr())
+
+  }
+
   const token = useContract({
-    addressOrName: value.qniTokenAddress,
+    addressOrName: value.qniTokenAddresstestnet,
     contractInterface: tokenAbi,
     signerOrProvider: provider,
   });
@@ -58,6 +64,8 @@ const DataTable = () => {
 
   useEffect(() => {
     refreshData(signer);
+    rtee()
+
   }, [signer, poolId]);
 
   function refreshData(signer) {
@@ -282,7 +290,7 @@ const DataTable = () => {
 
   async function getpoolinfo() {
     try {
-      var _poolinfo = await staking.poolInfo(poolId);
+      var _poolinfo = staking.poolInfo(poolId).then((e)=>console.log(e));
       const token_address = _poolinfo.lpToken.toString();
       const allocation_point = _poolinfo.allocPoint.toString();
       const last_reward_block = _poolinfo.lastRewardBlock.toString();
