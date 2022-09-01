@@ -1,4 +1,8 @@
 {
     "stakingAddress": "0x9B5c6d6bF592aCE6e593db037A2f7682B49F22ce",
-    "tokenAddress": "0x78bc069D5E5c1142F91532979Ba45E0464AB44e7"
+    "qniTokenAddress": "0x98343e3EaF0Aa8AF6e93fAFf70C8FF70D98862F1",
+    "rpcUrl": "https://bsc-dataseed1.defibit.io/",
+    "busd": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+    "router": "0xd99d1c33f9fc3444f8101754abc46c52416550d1",
+    "wbnb": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
 }

@@ -8,7 +8,7 @@ import { ethers } from "ethers";
 import stakingAbi from "../../stakingAbi.json";
 import tokenAbi from "../../tokenAbi.json";
 import value from "../../value.json";
-import { useSigner, useProvider, useContract } from "wagmi";
+import { useSigner, useProvider, useContract, useBalance } from "wagmi";
 import { _nameprepTableA1 } from "@ethersproject/strings/lib/idna";
 
 const DataTable = () => {
@@ -17,20 +17,18 @@ const DataTable = () => {
     window.matchMedia("(min-width: 778px)").matches
   );
   const { data: signer, isError, isLoading } = useSigner();
-    console.log(signer)
-    
-    const provider = useProvider();
+  console.log(signer);
+
+  const provider = useProvider();
   // const staking = new ethers.Contract(value.stakingAddress, stakingAbi, signer);
   // const token = new ethers.Contract(value.stakingToken, tokenAbi, signer);
   const staking = useContract({
     addressOrName: value.stakingAddress,
     contractInterface: stakingAbi,
-
   });
 
-
   const token = useContract({
-    addressOrName: value.tokenAddress,
+    addressOrName: value.qniTokenAddress,
     contractInterface: tokenAbi,
     signerOrProvider: provider,
   });
@@ -38,6 +36,7 @@ const DataTable = () => {
   const [poolId, setPoolId] = useState(0);
   const [poolLength, setPoolLength] = useState(0);
   const [amount, setAmount] = useState();
+  const [amountloc, setAmountloc] = useState(0);
   const [istokenapproved, settokenapproved] = useState(false);
   const [myaddress, setMyaddress] = useState();
   const [poolinfo, setPoolinfo] = useState();
@@ -47,7 +46,7 @@ const DataTable = () => {
   const [qnipershare, setQnipershare] = useState();
   const [lastrewardblock, setLastrewardblock] = useState();
   const [feeadress, setfeeaddress] = useState();
-  const [rewarddebt, setRewarddebt] = useState();
+  const [rewarddebt, setRewarddebt] = useState(0);
   const [totalallocpoint, setTotalallocpoint] = useState();
   const [emissionrate, setEmissionrate] = useState();
   const [bonusmultiplier, setBonusmultiplier] = useState();
@@ -56,7 +55,6 @@ const DataTable = () => {
   const [owner, setOwner] = useState();
   const [pendingqni, setPendingqni] = useState();
   const [errors, setError] = useState();
-
 
   useEffect(() => {
     refreshData(signer);
@@ -153,7 +151,7 @@ const DataTable = () => {
     try {
       let tx = await staking.add(
         allocpoint,
-        value.tokenAddress,
+        value.qniTokenAddress,
         depositfee,
         true
       );
@@ -284,7 +282,7 @@ const DataTable = () => {
 
   async function getpoolinfo() {
     try {
-      var _poolinfo = await staking.poolinfo(poolId);
+      var _poolinfo = await staking.poolInfo(poolId);
       const token_address = _poolinfo.lpToken.toString();
       const allocation_point = _poolinfo.allocPoint.toString();
       const last_reward_block = _poolinfo.lastRewardBlock.toString();
@@ -324,10 +322,11 @@ const DataTable = () => {
 
   async function getuserinfo() {
     try {
-      var _userinfo = await staking.userInfo();
+      var _userinfo = await staking.userInfo(poolId, signer.address);
       const rewardDebt = _userinfo.rewardDebt.toString();
       const amount = _userinfo.amount.toString();
       setRewarddebt(rewardDebt);
+      setAmountloc(amount);
       console.log("Reward debt ", rewardDebt);
       console.log("Amount: ", amount);
     } catch (err) {
@@ -416,7 +415,7 @@ const DataTable = () => {
         },
         {
           title: "Earned",
-          content: "0",
+          content: `$ ${rewarddebt}`,
         },
         {
           title: "APR",
@@ -424,11 +423,11 @@ const DataTable = () => {
         },
         {
           title: "Total Staked",
-          content: "$6,881,690",
+          content: `$ ${amountloc}`,
         },
         {
           title: "Earned",
-          content: "$0.00",
+          content: `$ ${rewarddebt + amountloc}`,
         },
       ],
     },
@@ -444,7 +443,7 @@ const DataTable = () => {
         },
         {
           title: "Earned",
-          content: "0",
+          content: `$ ${rewarddebt}`,
         },
         {
           title: "APR",
@@ -452,11 +451,11 @@ const DataTable = () => {
         },
         {
           title: "Total Staked",
-          content: "$6,881,690",
+          content: `$ ${amountloc}`,
         },
         {
           title: "Earned",
-          content: "$0.00",
+          content: `$ ${rewarddebt + amountloc}`,
         },
       ],
     },
@@ -472,7 +471,7 @@ const DataTable = () => {
         },
         {
           title: "Earned",
-          content: "0",
+          content: `$ ${rewarddebt}`,
         },
         {
           title: "APR",
@@ -480,11 +479,11 @@ const DataTable = () => {
         },
         {
           title: "Total Staked",
-          content: "$6,881,690",
+          content: `$ ${amountloc}`,
         },
         {
           title: "Earned",
-          content: "$0.00",
+          content: `$ ${rewarddebt + amountloc}`,
         },
       ],
     },
@@ -500,7 +499,7 @@ const DataTable = () => {
         },
         {
           title: "Earned",
-          content: "0",
+          content: `$ ${rewarddebt}`,
         },
         {
           title: "APR",
@@ -508,11 +507,11 @@ const DataTable = () => {
         },
         {
           title: "Total Staked",
-          content: "$6,881,690",
+          content: `$ ${amountloc}`,
         },
         {
           title: "Earned",
-          content: "$0.00",
+          content: `$ ${rewarddebt + amountloc}`,
         },
       ],
     },
@@ -528,7 +527,7 @@ const DataTable = () => {
         },
         {
           title: "Earned",
-          content: "0",
+          content: `$ ${rewarddebt}`,
         },
         {
           title: "APR",
@@ -536,11 +535,11 @@ const DataTable = () => {
         },
         {
           title: "Total Staked",
-          content: "$6,881,690",
+          content: `$ ${amountloc}`,
         },
         {
           title: "Earned",
-          content: "$0.00",
+          content: `$ ${rewarddebt + amountloc}`,
         },
       ],
     },
@@ -556,7 +555,7 @@ const DataTable = () => {
         },
         {
           title: "Earned",
-          content: "0",
+          content: `$ ${rewarddebt}`,
         },
         {
           title: "APR",
@@ -564,11 +563,11 @@ const DataTable = () => {
         },
         {
           title: "Total Staked",
-          content: "$6,881,690",
+          content: `$ ${amountloc}`,
         },
         {
           title: "Earned",
-          content: "$0.00",
+          content: `$ ${rewarddebt + amountloc}`,
         },
       ],
     },
@@ -584,7 +583,7 @@ const DataTable = () => {
         },
         {
           title: "Earned",
-          content: "0",
+          content: `$ ${rewarddebt}`,
         },
         {
           title: "APR",
@@ -592,11 +591,11 @@ const DataTable = () => {
         },
         {
           title: "Total Staked",
-          content: "$6,881,690",
+          content: `$ ${amountloc}`,
         },
         {
           title: "Earned",
-          content: "$0.00",
+          content: `$ ${rewarddebt + amountloc}`,
         },
       ],
     },
@@ -612,7 +611,7 @@ const DataTable = () => {
         },
         {
           title: "Earned",
-          content: "0",
+          content: `$ ${rewarddebt}`,
         },
         {
           title: "APR",
@@ -620,11 +619,11 @@ const DataTable = () => {
         },
         {
           title: "Total Staked",
-          content: "$6,881,690",
+          content: `$ ${amountloc}`,
         },
         {
           title: "Earned",
-          content: "$0.00",
+          content: `$ ${rewarddebt + amountloc}`,
         },
       ],
     },
@@ -857,7 +856,9 @@ const DataTable = () => {
                               <div className="row align-items-center gy-4">
                                 <div className="col">
                                   <div className="d-flex align-items-start flex-column gap-1">
-                                    <ListHeading>Total Locked:</ListHeading>
+                                    <ListHeading>
+                                      Total Locked: {amountloc}
+                                    </ListHeading>
                                     <ListHeading>
                                       Average Lock Duration:
                                     </ListHeading>
@@ -913,10 +914,13 @@ const DataTable = () => {
                                       <div className="d-flex flex-wrap gap-2 gap-lg-4">
                                         <div>
                                           <h6>Qroni Earned</h6>
-                                          <h5>123.1267989273515344790</h5>
+                                          <h5>$ {rewarddebt}</h5>
                                         </div>
                                         <div className="align-self-end">
-                                          <button className="btn btn-gr-primary">
+                                          <button
+                                            className="btn btn-gr-primary"
+                                            onclick="deposit()"
+                                          >
                                             Harvest
                                           </button>
                                         </div>
