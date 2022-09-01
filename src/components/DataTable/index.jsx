@@ -31,7 +31,6 @@ const DataTable = () => {
 
   const rtee = async() => {
     console.log(await staking.devaddr())
-
   }
 
   const token = useContract({
@@ -63,6 +62,8 @@ const DataTable = () => {
   const [owner, setOwner] = useState();
   const [pendingqni, setPendingqni] = useState();
   const [errors, setError] = useState();
+  const [qronibalance, setqronibalance] = useState(0);
+
 
   useEffect(() => {
     refreshData(signer);
@@ -89,21 +90,19 @@ const DataTable = () => {
       getdevaddr();
       getowner();
       getpendingqni();
+      getUserQroni()
     }
   }
 
-  async function deposit() {
+  async function deposit(poolId_selected) {
     try {
-      if (amount === undefined) {
-        alert("Enter amount first");
-      } else {
+        const amount = qronibalance;
         await approve();
         let _amount = ethers.utils.parseEther(amount.toString());
-        let tx = await staking.deposit(poolId, _amount);
+        let tx = await staking.deposit(poolId_selected, _amount);
         let receipt = await tx.wait();
         console.log("Stake Tx receipt: ", receipt);
         refreshData(signer);
-      }
     } catch (error) {
       console.log(error);
       try {
@@ -130,9 +129,21 @@ const DataTable = () => {
     }
   }
 
-  async function withdraw() {
+  async function getUserQroni() {
+      try {
+        let qroni = await token.balanceOf(await signer.getAddress());
+        const qroniconverted = ethers.utils.formatUnits(qroni, 9)
+        console.log(qroniconverted)
+        setqronibalance(qroniconverted)
+      } catch (error) {
+        console.log(error);
+      }
+    } 
+
+
+  async function withdraw(poolId_selected) {
     try {
-      let tx = await staking.withdraw(poolId, amount);
+      let tx = await staking.withdraw(poolId_selected, amountloc);
       let receipt = await tx.wait();
       console.log("Withdraw tx receipt: ", receipt);
       refreshData(signer);
@@ -146,158 +157,14 @@ const DataTable = () => {
     }
   }
 
-  async function emergencyWithdraw() {
-    try {
-      let tx = await staking.emergencyWithdraw(poolId);
-      let receipt = tx.wait();
-      console.log("Emergency withdraw Tx receipt ", receipt);
-      refreshData(signer);
-    } catch (error) {
-      console.log(error.toString());
-      try {
-        setError(error.error.data.message);
-      } catch {
-        setError("Something went wrong, please try again!");
-      }
-    }
-  }
 
-  async function addpool() {
-    try {
-      let tx = await staking.add(
-        allocpoint,
-        value.qniTokenAddress,
-        depositfee,
-        true
-      );
-      let receipt = tx.wait();
-      console.log("New pool added Tx receipt: ", receipt);
-      refreshData(signer);
-    } catch (error) {
-      console.log(error.toString());
-      try {
-        setError(error.error.data.message);
-      } catch {
-        setError("Something went wrong, please try again!");
-      }
-    }
-  }
 
-  async function adddevaddr() {
-    try {
-      let tx = await staking.dev(myaddress);
-      let receipt = tx.wait();
-      console.log("Dev address changed, tx receipt: ", receipt);
-      refreshData(signer);
-    } catch (error) {
-      console.log(error.toString());
-      try {
-        setError(error.error.data.message);
-      } catch {
-        setError("Something went wrong, please try again!");
-      }
-    }
-  }
 
-  async function massupdatepools() {
-    try {
-      let tx = await staking.massUpdatePools();
-      let receipt = tx.wait();
-      console.log("Mass updated pools, tx receipt: ", receipt);
-      refreshData(signer);
-    } catch (error) {
-      console.log(error.toString());
-      try {
-        setError(error.error.data.message);
-      } catch {
-        setError("Something went wrong, please try again!");
-      }
-    }
-  }
 
-  async function setpool() {
-    try {
-      let tx = await staking.set(poolId, allocpoint, depositfee, true);
-      let receipt = tx.wait();
-      console.log("Pool is set, tx receipt: ", receipt);
-      refreshData(signer);
-    } catch (error) {
-      console.log(error.toString());
-      try {
-        setError(error.error.data.message);
-      } catch {
-        setError("Something went wrong, please try again!");
-      }
-    }
-  }
-
-  async function setstakingwallet() {
-    try {
-      let tx = await staking.setStakingWallet(myaddress);
-      let receipt = tx.wait();
-      console.log("Staking wallet is set, tx receipt: ", receipt);
-      refreshData(signer);
-    } catch (error) {
-      console.log(error.toString());
-      try {
-        setError(error.error.data.message);
-      } catch {
-        setError("Something went wrong, please try again!");
-      }
-    }
-  }
-
-  async function transferownership() {
-    try {
-      let tx = await staking.transferOwnership(myaddress); //parameter must be changed
-      let receipt = tx.wait();
-      console.log("Owner changed, tx receipt: ", receipt);
-      refreshData(signer);
-    } catch (error) {
-      console.log(error.toString());
-      try {
-        setError(error.error.data.message);
-      } catch {
-        setError("Something went wrong, please try again!");
-      }
-    }
-  }
-
-  async function updateemissionrate() {
-    try {
-      let tx = await staking.updateEmissionRate(emissionrate);
-      let receipt = tx.wait();
-      console.log("Qni emission rate changed, tx receipt: ", receipt);
-      refreshData(signer);
-    } catch (error) {
-      console.log(error.toString());
-      try {
-        setError(error.error.data.message);
-      } catch {
-        setError("Something went wrong, please try again!");
-      }
-    }
-  }
-
-  async function updatepool() {
-    try {
-      let tx = await staking.updatePool(poolId);
-      let receipt = tx.wait();
-      console.log("Pool updated, tx receipt: ", receipt);
-      refreshData(signer);
-    } catch (error) {
-      console.log(error.toString());
-      try {
-        setError(error.error.data.message);
-      } catch {
-        setError("Something went wrong, please try again!");
-      }
-    }
-  }
 
   async function getpoolinfo() {
     try {
-      var _poolinfo = staking.poolInfo(poolId).then((e)=>console.log(e));
+      var _poolinfo = staking.poolInfo(poolId);
       const token_address = _poolinfo.lpToken.toString();
       const allocation_point = _poolinfo.allocPoint.toString();
       const last_reward_block = _poolinfo.lastRewardBlock.toString();
@@ -338,8 +205,8 @@ const DataTable = () => {
   async function getuserinfo() {
     try {
       var _userinfo = await staking.userInfo(poolId, signer.address);
-      const rewardDebt = _userinfo.rewardDebt.toString();
-      const amount = _userinfo.amount.toString();
+      const rewardDebt =  ethers.utils.formatUtils(_userinfo.rewardDebt, 9);
+      const amount = ethers.utils.formatUtils(_userinfo.amount, 9);
       setRewarddebt(rewardDebt);
       setAmountloc(amount);
       console.log("Reward debt ", rewardDebt);
@@ -420,6 +287,7 @@ const DataTable = () => {
   const data = [
     {
       id: 1,
+      stakeorfarmid:0,
       list: [
         {
           icon: Icon,
@@ -429,8 +297,8 @@ const DataTable = () => {
           content: "Qroni-BNB LP",
         },
         {
-          title: "Earned",
-          content: `$ ${rewarddebt}`,
+          title: "Qroni Balance",
+          content: `$ ${qronibalance}`,
         },
         {
           title: "APR",
@@ -442,12 +310,13 @@ const DataTable = () => {
         },
         {
           title: "Earned",
-          content: `$ ${rewarddebt + amountloc}`,
+          content: `$ ${rewarddebt}`,
         },
       ],
     },
     {
       id: 1,
+      stakeorfarmid:1,
       list: [
         {
           icon: Icon,
@@ -457,8 +326,8 @@ const DataTable = () => {
           content: "Qroni-BNB LP",
         },
         {
-          title: "Earned",
-          content: `$ ${rewarddebt}`,
+          title: "Qroni Balance",
+          content: `$ ${qronibalance}`,
         },
         {
           title: "APR",
@@ -470,152 +339,13 @@ const DataTable = () => {
         },
         {
           title: "Earned",
-          content: `$ ${rewarddebt + amountloc}`,
-        },
-      ],
-    },
-    {
-      id: 1,
-      list: [
-        {
-          icon: Icon,
-        },
-        {
-          title: "Earn Qroni",
-          content: "Qroni-BNB LP",
-        },
-        {
-          title: "Earned",
           content: `$ ${rewarddebt}`,
         },
-        {
-          title: "APR",
-          content: "41.68%",
-        },
-        {
-          title: "Total Staked",
-          content: `$ ${amountloc}`,
-        },
-        {
-          title: "Earned",
-          content: `$ ${rewarddebt + amountloc}`,
-        },
       ],
     },
     {
       id: 1,
-      list: [
-        {
-          icon: Icon,
-        },
-        {
-          title: "Earn Qroni",
-          content: "Qroni-BNB LP",
-        },
-        {
-          title: "Earned",
-          content: `$ ${rewarddebt}`,
-        },
-        {
-          title: "APR",
-          content: "41.68%",
-        },
-        {
-          title: "Total Staked",
-          content: `$ ${amountloc}`,
-        },
-        {
-          title: "Earned",
-          content: `$ ${rewarddebt + amountloc}`,
-        },
-      ],
-    },
-    {
-      id: 1,
-      list: [
-        {
-          icon: Icon,
-        },
-        {
-          title: "Earn Qroni",
-          content: "Qroni-BNB LP",
-        },
-        {
-          title: "Earned",
-          content: `$ ${rewarddebt}`,
-        },
-        {
-          title: "APR",
-          content: "41.68%",
-        },
-        {
-          title: "Total Staked",
-          content: `$ ${amountloc}`,
-        },
-        {
-          title: "Earned",
-          content: `$ ${rewarddebt + amountloc}`,
-        },
-      ],
-    },
-    {
-      id: 1,
-      list: [
-        {
-          icon: Icon,
-        },
-        {
-          title: "Earn Qroni",
-          content: "Qroni-BNB LP",
-        },
-        {
-          title: "Earned",
-          content: `$ ${rewarddebt}`,
-        },
-        {
-          title: "APR",
-          content: "41.68%",
-        },
-        {
-          title: "Total Staked",
-          content: `$ ${amountloc}`,
-        },
-        {
-          title: "Earned",
-          content: `$ ${rewarddebt + amountloc}`,
-        },
-      ],
-    },
-    {
-      id: 1,
-      list: [
-        {
-          icon: Icon,
-        },
-        {
-          title: "Earn Qroni",
-          content: "Qroni-BNB LP",
-        },
-        {
-          title: "Earned",
-          content: `$ ${rewarddebt}`,
-        },
-        {
-          title: "APR",
-          content: "41.68%",
-        },
-        {
-          title: "Total Staked",
-          content: `$ ${amountloc}`,
-        },
-        {
-          title: "Earned",
-          content: `$ ${rewarddebt + amountloc}`,
-        },
-      ],
-    },
-    {
-      id: 1,
+      stakeorfarmid:2,
       list: [
         {
           icon: Icon,
@@ -934,7 +664,7 @@ const DataTable = () => {
                                         <div className="align-self-end">
                                           <button
                                             className="btn btn-gr-primary"
-                                            onclick="deposit()"
+                                            onclick={() => deposit(item.stakeorfarmid)}
                                           >
                                             Harvest
                                           </button>
@@ -947,10 +677,8 @@ const DataTable = () => {
                                   <div className="text-lg-center text-start">
                                     <ButtonBox>
                                       <h6>Start Farming</h6>
-                                      <button className="">
-                                        {iswalletconnected ? <button>unstake </button>  : <ConnectButton />}
+                                        {iswalletconnected ? <button onclick={() => withdraw(item.stakeorfarmid)}> unstake </button>  : <ConnectButton />}
                                        
-                                      </button>
                                     </ButtonBox>
                                   </div>
                                 </div>
