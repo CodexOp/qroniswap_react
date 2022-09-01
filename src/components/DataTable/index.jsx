@@ -10,6 +10,7 @@ import tokenAbi from "../../tokenAbi.json";
 import value from "../../value.json";
 import { useSigner, useProvider, useContract, useBalance } from "wagmi";
 import { _nameprepTableA1 } from "@ethersproject/strings/lib/idna";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const DataTable = () => {
   const [isOpen, setIsOpen] = useState(null);
@@ -39,6 +40,7 @@ const DataTable = () => {
     signerOrProvider: provider,
   });
 
+  const [iswalletconnected, setIswalletconnected] = useState(false);
   const [poolId, setPoolId] = useState(0);
   const [poolLength, setPoolLength] = useState(0);
   const [amount, setAmount] = useState();
@@ -65,8 +67,13 @@ const DataTable = () => {
   useEffect(() => {
     refreshData(signer);
     rtee()
-
+  if(signer){
+    setIswalletconnected(true)
+  }
   }, [signer, poolId]);
+
+
+
 
   function refreshData(signer) {
     if (signer) {
@@ -940,8 +947,9 @@ const DataTable = () => {
                                   <div className="text-lg-center text-start">
                                     <ButtonBox>
                                       <h6>Start Farming</h6>
-                                      <button className="btn btn-gr-primary">
-                                        Connect Wallet
+                                      <button className="">
+                                        {iswalletconnected ? <button>unstake </button>  : <ConnectButton />}
+                                       
                                       </button>
                                     </ButtonBox>
                                   </div>
