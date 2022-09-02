@@ -21,23 +21,24 @@ const DataTable = () => {
   console.log(signer);
 
   const provider = useProvider();
-  // const staking = new ethers.Contract(value.stakingAddress, stakingAbi, signer);
-  // const token = new ethers.Contract(value.stakingToken, tokenAbi, signer);
-  const staking = useContract({
-    addressOrName: value.stakingAddress,
-    contractInterface: stakingAbi,
-  });
+  const staking = new ethers.Contract(value.stakingAddress, stakingAbi, signer);
+  const token = new ethers.Contract(value.qniTokenAddresstestnet, tokenAbi, signer);
+  // const staking = useContract({
+  //   addressOrName: value.stakingAddress,
+  //   contractInterface: stakingAbi,
+  //   signer
+  // });
 
 
   const rtee = async() => {
     console.log(await staking.devaddr())
   }
 
-  const token = useContract({
-    addressOrName: value.qniTokenAddresstestnet,
-    contractInterface: tokenAbi,
-    signerOrProvider: provider,
-  });
+  // const token = useContract({
+  //   addressOrName: value.qniTokenAddresstestnet,
+  //   contractInterface: tokenAbi,
+  //   signerOrProvider: provider,
+  // });
 
   const [iswalletconnected, setIswalletconnected] = useState(false);
   const [poolId, setPoolId] = useState(0);
@@ -96,6 +97,7 @@ const DataTable = () => {
 
   async function deposit(poolId_selected) {
     try {
+      console.log (poolId_selected)
         const amount = qronibalance;
         await approve();
         let _amount = ethers.utils.parseEther(amount.toString());
@@ -132,6 +134,7 @@ const DataTable = () => {
   async function getUserQroni() {
       try {
         let qroni = await token.balanceOf(await signer.getAddress());
+        console.log ("Qroni: ", qroni)
         const qroniconverted = ethers.utils.formatUnits(qroni, 9)
         console.log(qroniconverted)
         setqronibalance(qroniconverted)
@@ -664,7 +667,7 @@ const DataTable = () => {
                                         <div className="align-self-end">
                                           <button
                                             className="btn btn-gr-primary"
-                                            onclick={() => deposit(item.stakeorfarmid)}
+                                            onClick={() => deposit(item.stakeorfarmid)}
                                           >
                                             Harvest
                                           </button>
