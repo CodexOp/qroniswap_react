@@ -46,15 +46,15 @@
     margin-top: 30px;
   }
 
-  .info_token{
-    max-width: 25% !important;
-  }
-
+ 
 @media(min-width:777px){
 
 
 .info_token{
     margin-top: 20px;
 }
+.info_token{
+    max-width: 25% !important;
+  }
 }
 
