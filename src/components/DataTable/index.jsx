@@ -646,7 +646,7 @@ const DataTable = ({databool}) => {
 
   return (
     <div>
-      {isStake ? 
+      {/* {isStake ?  */}
     <Section>
       <div className="container">
         <div className="row">
@@ -861,7 +861,7 @@ const DataTable = ({databool}) => {
         </div>
       </div>
     </Section>
-    :<div>not stake</div> }
+    // :<div>not stake</div> }
     </div>
   );
 };
