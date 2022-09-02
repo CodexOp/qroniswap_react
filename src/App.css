@@ -2,9 +2,52 @@
     color: pink;
 }
 
+.pools_home{
+    color: #fff !important;
+}
+
+.btn{
+    padding: 7px 25px !important;
+    color: #000 !important;
+}
 
 .whitepaper_btn{
     margin-left:15px;
+    color: #000 !important;
+  }
+
+  [data-rk] ._12cbo8i6, [data-rk] ._12cbo8i6::after{
+    background: var(--gr-primary) !important;
+    border-radius: 8px;
+  }
+
+  .info_token div{
+    min-height: 130px !important;
+    padding: 30px 10px !important;
+  }
+
+
+    .banner-area img{
+        margin-top: 30px;
+  }
+
+
+  .call-to-action-padding{
+    border-radius: 8px !important;
+  }
+
+  button{
+    text-decoration: none;
+    color: #fff !important;
+    cursor: pointer;
+  }
+
+  .feature_box{
+    margin-top: 30px;
+  }
+
+  .info_token{
+    max-width: 25% !important;
   }
 
 @media(min-width:777px){

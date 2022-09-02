@@ -505,11 +505,10 @@ const DataTable = () => {
               <div className="select-group">
                 <select name="" id="">
                   <option value="">Choose One</option>
-                  <option value="item-1">Item 1</option>
-                  <option value="item-2">Item 2</option>
-                  <option value="item-3">Item 3</option>
-                  <option value="item-4">Item 4</option>
-                  <option value="item-5">Item 5</option>
+                  <option value="item-1">Hot</option>
+                  <option value="item-2">Date</option>
+                  <option value="item-3">Rate</option>
+                  <option value="item-4">% APR</option>
                 </select>
               </div>
               {/* Input Select */}

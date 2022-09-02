@@ -73,7 +73,7 @@ const Features =()=> {
 
             <div className="row gy-5 gx-3 text-center">
                 {list && list.map((feature, i) =>(
-                <div key={i} className="col-lg-4 col-md-6">
+                <div key={i} className="col-lg-4 col-md-6 feature_box">
 
                     {feature.icon && <ItemThumb><img src={feature.icon} alt={feature.title} /></ItemThumb> }
                     <div className="item-content">

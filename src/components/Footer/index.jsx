@@ -25,7 +25,7 @@ const Footer =()=> {
                     title: 'Liquidity',
                 },
                 {
-                    slug: 'nft',
+                    slug: 'https://nft.qroni.io',
                     title: 'NFT',
                 },
             ]

@@ -12,7 +12,7 @@ import Farming from './pages/Farming';
 import Staking from './pages/Staking';
 import ReactDOM from 'react-dom/client'
 import '@rainbow-me/rainbowkit/dist/index.css';
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { getDefaultWallets, RainbowKitProvider, darkTheme} from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
@@ -71,6 +71,13 @@ const App = () => {
                 <RainbowKitProvider
                   chains={chains}
                   initialChain={BSCchainTestnet}
+                  theme={darkTheme({
+                    accentColor: '#7b3fe4',
+                    accentColorForeground: 'white',
+                    borderRadius: 'small',
+                    fontStack: 'system',
+                    overlayBlur: 'small',
+                  })}
                 >  
 
     <Routes>

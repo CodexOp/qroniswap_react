@@ -5,11 +5,12 @@ import TrendingIcon1 from './img/partner-1.png';
 import TrendingIcon2 from './img/partner-2.png';
 import TrendingIcon3 from './img/partner-3.png';
 import TrendingIcon4 from './img/partner-4.png';
+import { Link } from 'react-router-dom';
 const Trending =()=> {
     const list = [
         {
             title: "Stake Qroni - Earn Qroni",
-            performance: "Up to 50%",
+            performance: "Up to 250%",
             content: "APY",
             icon: TrendingIcon1,
         },
@@ -133,7 +134,8 @@ const Trending =()=> {
                     {list && <ul className="list-vr list-unstyled row gy-5 justify-content-center">
                         {list.map((item, i) => (
                         <li key={i} className="col-xl-3 col-sm-6">
-                            <Box>
+                            <Link to="staking">
+                            <Box className='pools_home'>
                                 {item.title && <h6>{item.title}</h6>}
                                 <div className="d-flex gap-3">
                                     {item.performance &&
@@ -146,6 +148,7 @@ const Trending =()=> {
                                     </div>}
                                 </div>
                             </Box>
+                            </Link>
                         </li>
                         ))}
                     </ul>}

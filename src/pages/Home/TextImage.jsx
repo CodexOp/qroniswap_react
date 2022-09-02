@@ -13,7 +13,7 @@ const TextImage =()=> {
             banner: PoolBanner1,
             button: {
                 label: "Get started",
-                url: "stake"
+                url: "staking"
             },
             list: [
                 { name: "Support the network with your tokens"},
@@ -28,7 +28,7 @@ const TextImage =()=> {
             banner_left: true,
             button: {
                 label: "Start farming",
-                url: "farm"
+                url: "farming"
             },
             list: [
                 { name: "Provide liquidity in our protocol"},
@@ -43,7 +43,7 @@ const TextImage =()=> {
             button: {
                 label: "Start minting tickets",
                 cMingSoon: "Coming Soon",
-                url: ""
+                url: "https://nft.qroni.io"
             },
             list: [
                 { name: "Mint unique NFT tickets"},
