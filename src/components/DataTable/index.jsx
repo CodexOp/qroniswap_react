@@ -11,8 +11,11 @@ import value from "../../value.json";
 import { useSigner, useProvider, useContract, useBalance } from "wagmi";
 import { _nameprepTableA1 } from "@ethersproject/strings/lib/idna";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-
-const DataTable = () => {
+import { useHistory ,useLocation } from 'react-router-dom';
+const DataTable = ({databool}) => {
+  const location = useLocation()
+  console.log(location.pathname)
+ 
   const [isOpen, setIsOpen] = useState(null);
   const [laptop, setLaptop] = useState(
     window.matchMedia("(min-width: 778px)").matches
@@ -57,19 +60,38 @@ const DataTable = () => {
   const [reward_pool1, setreward_pool1] = useState(0);
   const [reward_pool2, setreward_pool2] = useState(0);
   const [reward_pool3, setreward_pool3] = useState(0);
+  const [reward_pool4, setreward_pool4] = useState(0);
+  const [reward_pool5, setreward_pool5] = useState(0);
+  const [reward_pool6, setreward_pool6] = useState(0);
   const [amountstaked1, setamountstaked1] = useState(0);
   const [amountstaked2, setamountstaked2] = useState(0);
   const [amountstaked3, setamountstaked3] = useState(0);
+  const [amountstaked4, setamountstaked4] = useState(0);
+  const [amountstaked5, setamountstaked5] = useState(0);
+  const [amountstaked6, setamountstaked6] = useState(0);
   const [fee1, setfee1] = useState(0);
   const [fee2, setfee2] = useState(0);
   const [fee3, setfee3] = useState(0);
+  const [fee4, setfee4] = useState(0);
+  const [fee5, setfee5] = useState(0);
+  const [fee6, setfee6] = useState(0);
   const [share1, setShare1] = useState(0);
   const [share2, setShare2] = useState(0);
   const [share3, setShare3] = useState(0);
-
+  const [share4, setShare4] = useState(0);
+  const [share5, setShare5] = useState(0);
+  const [share6, setShare6] = useState(0);
+  const [isStake, setIsStake] = useState(true);
 
   useEffect(() => {
     refreshData(signer);
+    if(location.pathname === "/farming"){
+      setIsStake(false)
+    }
+    else{
+      setIsStake(true)
+    }
+
   if(signer){
     setIswalletconnected(true)
   }
@@ -86,21 +108,39 @@ const DataTable = () => {
       const {rewardDebt: rewards1, amount: amount1} = await getuserinfo(0);
       const {rewardDebt: rewards2, amount: amount2} = await getuserinfo(1);
       const {rewardDebt: rewards3, amount: amount3} = await getuserinfo(2);
+      const {rewardDebt: rewards4, amount: amount4} = await getuserinfo(3);
+      const {rewardDebt: rewards5, amount: amount5} = await getuserinfo(4);
+      const {rewardDebt: rewards6, amount: amount6} = await getuserinfo(5);
       setreward_pool1(rewards1)
       setreward_pool2(rewards2)
       setreward_pool3(rewards3)
+      setreward_pool4(rewards4)
+      setreward_pool5(rewards5)
+      setreward_pool6(rewards6)
       setamountstaked1(amount1)
       setamountstaked2(amount2)
       setamountstaked3(amount3)
+      setamountstaked4(amount1)
+      setamountstaked5(amount2)
+      setamountstaked6(amount3)
       const {depositfee: fee1, acc_qni_per_share: share1} = await getpoolinfo(0);
       const {depositfee: fee2, acc_qni_per_share: share2} = await getpoolinfo(1);
       const {depositfee: fee3, acc_qni_per_share: share3} = await getpoolinfo(2);
+      const {depositfee: fee4, acc_qni_per_share: share4} = await getpoolinfo(3);
+      const {depositfee: fee5, acc_qni_per_share: share5} = await getpoolinfo(4);
+      const {depositfee: fee6, acc_qni_per_share: share6} = await getpoolinfo(5);
       setfee1(fee1)
       setfee2(fee2)
       setfee3(fee3)
+      setfee4(fee4)
+      setfee5(fee5)
+      setfee6(fee6)
       setShare1(share1)
       setShare2(share2)
       setShare3(share3)
+      setShare4(share4)
+      setShare5(share5)
+      setShare6(share6)
       getpoollength();
       getfeeaddress();
       getdevaddr();
@@ -296,7 +336,7 @@ const DataTable = () => {
     setIsOpen(null);
   };
 
-  const data = [
+  const stakedata = [
     {
       id: 1,
       stakeorfarmid:0,
@@ -310,7 +350,7 @@ const DataTable = () => {
         },
         {
           title: "Earn Qroni",
-          content: "Qroni-BNB LP",
+          content: "Stake ETH",
         },
         {
           title: "Qroni Balance",
@@ -318,7 +358,7 @@ const DataTable = () => {
         },
         {
           title: "APR",
-          content: "41.68%",
+          content: "300%",
         },
         {
           title: "Total Staked",
@@ -331,7 +371,7 @@ const DataTable = () => {
       ],
     },
     {
-      id: 1,
+      id: 2,
       stakeorfarmid:1,
       QniPerShare: share2,
       PerfomanceFee: fee2,
@@ -343,7 +383,7 @@ const DataTable = () => {
         },
         {
           title: "Earn Qroni",
-          content: "Qroni-BNB LP",
+          content: "Stake VCE",
         },
         {
           title: "Qroni Balance",
@@ -351,7 +391,7 @@ const DataTable = () => {
         },
         {
           title: "APR",
-          content: "41.68%",
+          content: "100%",
         },
         {
           title: "Total Staked",
@@ -364,7 +404,7 @@ const DataTable = () => {
       ],
     },
     {
-      id: 1,
+      id: 3,
       stakeorfarmid:2,
       QniPerShare: share3,
       PerfomanceFee: fee3,
@@ -376,7 +416,7 @@ const DataTable = () => {
         },
         {
           title: "Earn Qroni",
-          content: "Qroni-BNB LP",
+          content: "Stake BNB",
         },
         {
           title: "Qroni Balance",
@@ -384,7 +424,7 @@ const DataTable = () => {
         },
         {
           title: "APR",
-          content: "41.68%",
+          content: "120%",
         },
         {
           title: "Total Staked",
@@ -393,6 +433,105 @@ const DataTable = () => {
         {
           title: "Earned",
           content: `$ ${reward_pool3}`,
+        },
+      ],
+    },
+    {
+      id: 4,
+      stakeorfarmid:3,
+      QniPerShare: share4,
+      PerfomanceFee: fee4,
+      tokenlocked:amountstaked4,
+
+      list: [
+        {
+          icon: Icon,
+        },
+        {
+          title: "Earn Qroni",
+          content: "Stake BTC",
+        },
+        {
+          title: "Qroni Balance",
+          content: `$ ${rewarddebt}`,
+        },
+        {
+          title: "APR",
+          content: "150%",
+        },
+        {
+          title: "Total Staked",
+          content: `$ ${amountloc}`,
+        },
+        {
+          title: "Earned",
+          content: `$ ${reward_pool4}`,
+        },
+      ],
+    },
+    {
+      id: 5,
+      stakeorfarmid:4,
+      QniPerShare: share5,
+      PerfomanceFee: fee5,
+      tokenlocked:amountstaked5,
+
+      list: [
+        {
+          icon: Icon,
+        },
+        {
+          title: "Earn Qroni",
+          content: "Stake ETH",
+        },
+        {
+          title: "Qroni Balance",
+          content: `$ ${rewarddebt}`,
+        },
+        {
+          title: "APR",
+          content: "150%",
+        },
+        {
+          title: "Total Staked",
+          content: `$ ${amountloc}`,
+        },
+        {
+          title: "Earned",
+          content: `$ ${reward_pool5}`,
+        },
+      ],
+    },
+    {
+      id: 6,
+      stakeorfarmid:5,
+      QniPerShare: share6,
+      PerfomanceFee: fee6,
+      tokenlocked:amountstaked6,
+
+      list: [
+        {
+          icon: Icon,
+        },
+        {
+          title: "Earn Qroni",
+          content: "Stake ETH",
+        },
+        {
+          title: "Qroni Balance",
+          content: `$ ${rewarddebt}`,
+        },
+        {
+          title: "APR",
+          content: "150%",
+        },
+        {
+          title: "Total Staked",
+          content: `$ ${amountloc}`,
+        },
+        {
+          title: "Earned",
+          content: `$ ${reward_pool6}`,
         },
       ],
     },
@@ -503,7 +642,11 @@ const DataTable = () => {
     color: #364073;
   `;
 
+
+
   return (
+    <div>
+      {isStake ? 
     <Section>
       <div className="container">
         <div className="row">
@@ -538,8 +681,8 @@ const DataTable = () => {
             <TableBox>
               <table>
                 <tbody>
-                  {data &&
-                    data.map((item, i) => (
+                  {stakedata &&
+                    stakedata.map((item, i) => (
                       <>
                         {!laptop ? (
                           <>
@@ -718,6 +861,8 @@ const DataTable = () => {
         </div>
       </div>
     </Section>
+    :<div>not stake</div> }
+    </div>
   );
 };
 

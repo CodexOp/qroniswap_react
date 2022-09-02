@@ -44,7 +44,7 @@ const Liquidity =()=> {
         <li><a href="/staking" className='active'>Stake</a></li>
       </NavTab>
       <HeroCover heading="Staking Pools" content="Just stake some tokens to earn. High APR, low risk."/>
-      <DataTable />
+      <DataTable databool={true}/>
     </Main>
     <Footer />
     </>
