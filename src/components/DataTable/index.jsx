@@ -30,10 +30,6 @@ const DataTable = () => {
   // });
 
 
-  const rtee = async() => {
-    console.log(await staking.devaddr())
-  }
-
   // const token = useContract({
   //   addressOrName: value.qniTokenAddresstestnet,
   //   contractInterface: tokenAbi,
@@ -55,25 +51,23 @@ const DataTable = () => {
   const [lastrewardblock, setLastrewardblock] = useState();
   const [feeadress, setfeeaddress] = useState();
   const [rewarddebt, setRewarddebt] = useState(0);
-  const [totalallocpoint, setTotalallocpoint] = useState();
-  const [emissionrate, setEmissionrate] = useState();
-  const [bonusmultiplier, setBonusmultiplier] = useState();
-  const [multiplier, setMultiplier] = useState();
-  const [devaddr, setDevaddr] = useState();
-  const [owner, setOwner] = useState();
-  const [pendingqni, setPendingqni] = useState();
+  const [devaddr, setDevaddr] = useState(0);
   const [errors, setError] = useState();
   const [qronibalance, setqronibalance] = useState(0);
+  const [reward_pool1, setreward_pool1] = useState(0);
+  const [reward_pool2, setreward_pool2] = useState(0);
+  const [reward_pool3, setreward_pool3] = useState(0);
+  const [amountstaked1, setamountstaked1] = useState(0);
+  const [amountstaked2, setamountstaked2] = useState(0);
+  const [amountstaked3, setamountstaked3] = useState(0);
 
 
   useEffect(() => {
     refreshData(signer);
-    rtee()
   if(signer){
     setIswalletconnected(true)
   }
   }, [signer, poolId]);
-
 
 
 
@@ -82,16 +76,22 @@ const DataTable = () => {
       signer.getAddress().then((res) => {
         setMyaddress(res);
       });
-      getpoolinfo();
+      checkApproved();
+      const {rewards1, amount1} = getuserinfo(0);
+      const {rewards2, amount2} = getuserinfo(1);
+      const {rewards3, amount3} = getuserinfo(2);
+      setreward_pool1(rewards1)
+      setreward_pool2(rewards2)
+      setreward_pool3(rewards3)
+      setamountstaked1(amount1)
+      setamountstaked2(amount2)
+      setamountstaked3(amount3)
+      console.log(rewards1, rewards2)
       getpoollength();
       getfeeaddress();
-      getuserinfo();
-      gettotalallocpoints();
-      getbonusmultiplier();
       getdevaddr();
-      getowner();
-      getpendingqni();
-      getUserQroni()
+      getUserQroni();
+      
     }
   }
 
@@ -112,6 +112,22 @@ const DataTable = () => {
       } catch {
         setError("Something went wrong, please try again!");
       }
+    }
+  }
+
+
+  const checkApproved = async() => {
+    let userAddress = await signer.getAddress()
+    const isApproved = await token.allowance(userAddress, value.stakingAddress);
+    const totaltokenapproved = isApproved.toString()
+    if(totaltokenapproved.length > 2){
+      console.log("approved", totaltokenapproved);
+      settokenapproved(true)
+    }
+    else{
+      console.log("Not Approved",totaltokenapproved);
+      settokenapproved(false)
+
     }
   }
 
@@ -165,15 +181,15 @@ const DataTable = () => {
 
 
 
+
   async function getpoolinfo() {
     try {
-      var _poolinfo = staking.poolInfo(poolId);
+      var _poolinfo = await staking.poolInfo(poolId);
       const token_address = _poolinfo.lpToken.toString();
-      const allocation_point = _poolinfo.allocPoint.toString();
       const last_reward_block = _poolinfo.lastRewardBlock.toString();
       const acc_qni_per_share = _poolinfo.accQNIPerShare.toString();
-      const depositfee = _poolinfo.depositFeeBP.toString();
-      setAllocpoint(allocation_point);
+      const depositfee = _poolinfo.depositFeeBP;
+      console.log(depositfee);
       setDepositfee(depositfee);
       setPoolinfo(_poolinfo);
       setTokenaddress(token_address);
@@ -183,6 +199,8 @@ const DataTable = () => {
       console.log(err.message);
     }
   }
+
+  
 
   async function getpoollength() {
     try {
@@ -205,43 +223,28 @@ const DataTable = () => {
     }
   }
 
-  async function getuserinfo() {
+  async function getuserinfo(poolidindex) {
     try {
-      var _userinfo = await staking.userInfo(poolId, signer.address);
-      const rewardDebt =  ethers.utils.formatUtils(_userinfo.rewardDebt, 9);
-      const amount = ethers.utils.formatUtils(_userinfo.amount, 9);
+      var _userinfo = await staking.userInfo(poolidindex, signer.getAddress());
+      console.log(_userinfo)
+      const rewardDebt = await _userinfo.rewardDebt.toNumber();
+      const amount = await _userinfo.amount.toNumber();
       setRewarddebt(rewardDebt);
       setAmountloc(amount);
       console.log("Reward debt ", rewardDebt);
       console.log("Amount: ", amount);
+      return {rewardDebt, amount};   
     } catch (err) {
       console.log(err.message);
     }
   }
 
-  async function gettotalallocpoints() {
-    try {
-      var _totalalloc = await staking.totalAllocPoint().toString();
-      setTotalallocpoint(_totalalloc);
-      console.log("Total allocation points ", totalallocpoint);
-    } catch (err) {
-      console.log(err.message);
-    }
-  }
 
-  async function getbonusmultiplier() {
-    try {
-      var _bonusmultiplier = await staking.BONUS_MULTIPLIER.toString();
-      setBonusmultiplier(_bonusmultiplier);
-      console.log("Bonus multiplier: ", bonusmultiplier);
-    } catch (err) {
-      console.log(err.message);
-    }
-  }
+
 
   async function getdevaddr() {
     try {
-      var _devaddr = await staking.devaddr.toString();
+      const _devaddr = await staking.devaddr();
       setDevaddr(_devaddr);
       console.log("Dev address: ", devaddr);
     } catch (err) {
@@ -249,29 +252,6 @@ const DataTable = () => {
     }
   }
 
-  // async function getmultiplier(){
-  //
-  // }
-  async function getowner() {
-    try {
-      var _owner = await staking.owner.toString();
-      setOwner(_owner);
-      console.log("Owner: ", _owner);
-    } catch (err) {
-      console.log(err.message);
-    }
-  }
-
-  async function getpendingqni() {
-    try {
-      var _pendingqni = await staking.pendingQNI(poolId, myaddress);
-      const pqni = _pendingqni.toString();
-      console.log("pending qni: ", pqni);
-      setPendingqni(pqni);
-    } catch (err) {
-      console.log(err.message);
-    }
-  }
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
@@ -291,6 +271,9 @@ const DataTable = () => {
     {
       id: 1,
       stakeorfarmid:0,
+      lockedDuration: "20 Days",
+      PerfomanceFee: "15%",
+
       list: [
         {
           icon: Icon,
@@ -313,13 +296,15 @@ const DataTable = () => {
         },
         {
           title: "Earned",
-          content: `$ ${rewarddebt}`,
+          content: `$ ${reward_pool1}`,
         },
       ],
     },
     {
       id: 1,
       stakeorfarmid:1,
+      lockedDuration: "30 Days",
+      PerfomanceFee: "15%",
       list: [
         {
           icon: Icon,
@@ -342,13 +327,15 @@ const DataTable = () => {
         },
         {
           title: "Earned",
-          content: `$ ${rewarddebt}`,
+          content: `$ ${reward_pool2}`,
         },
       ],
     },
     {
       id: 1,
       stakeorfarmid:2,
+      lockedDuration: "50 Days",
+      PerfomanceFee: "15%",
       list: [
         {
           icon: Icon,
@@ -371,7 +358,7 @@ const DataTable = () => {
         },
         {
           title: "Earned",
-          content: `$ ${rewarddebt + amountloc}`,
+          content: `$ ${reward_pool3}`,
         },
       ],
     },
@@ -608,9 +595,9 @@ const DataTable = () => {
                                       Total Locked: {amountloc}
                                     </ListHeading>
                                     <ListHeading>
-                                      Average Lock Duration:
+                                      Average Lock Duration: 
                                     </ListHeading>
-                                    <ListHeading>Performance Fee:</ListHeading>
+                                    <ListHeading>Performance Fee: 15%</ListHeading>
                                   </div>
                                 </div>
                                 <div className="col">
