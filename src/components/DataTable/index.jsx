@@ -71,21 +71,22 @@ const DataTable = () => {
 
 
 
-  function refreshData(signer) {
+  async function refreshData(signer) {
     if (signer) {
       signer.getAddress().then((res) => {
         setMyaddress(res);
       });
       checkApproved();
-      const {rewards1, amount1} = getuserinfo(0);
-      const {rewards2, amount2} = getuserinfo(1);
-      const {rewards3, amount3} = getuserinfo(2);
+      const {rewardDebt: rewards1, amount: amount1} = await getuserinfo(0);
+      const {rewardDebt: rewards2, amount: amount2} = await getuserinfo(1);
+      const {rewardDebt: rewards3, amount: amount3} = await getuserinfo(2);
       setreward_pool1(rewards1)
       setreward_pool2(rewards2)
       setreward_pool3(rewards3)
       setamountstaked1(amount1)
       setamountstaked2(amount2)
       setamountstaked3(amount3)
+      console.log ("Hi")
       console.log(rewards1, rewards2)
       getpoollength();
       getfeeaddress();
@@ -667,7 +668,7 @@ const DataTable = () => {
                                   <div className="text-lg-center text-start">
                                     <ButtonBox>
                                       <h6>Start Farming</h6>
-                                        {iswalletconnected ? <button onclick={() => withdraw(item.stakeorfarmid)}> unstake </button>  : <ConnectButton />}
+                                        {iswalletconnected ? <button onClick={() => withdraw(item.stakeorfarmid)}> unstake </button>  : <ConnectButton />}
                                        
                                     </ButtonBox>
                                   </div>
