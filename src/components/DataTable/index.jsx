@@ -121,6 +121,7 @@ const DataTable = () => {
         refreshData(signer);
     } catch (error) {
       console.log(error);
+      alert(error.error.data.message)
       try {
         setError(error.error.data.message);
       } catch {
@@ -154,7 +155,7 @@ const DataTable = () => {
         let receipt = await tx.wait();
         console.log("Approve tx receipt: ", receipt);
       } catch (error) {
-        console.log("error");
+       alert(error.error.data.message)
       }
     } else {
       console.log("already approved");
@@ -170,6 +171,8 @@ const DataTable = () => {
         setqronibalance(qroniconverted)
       } catch (error) {
         console.log(error);
+        alert(error.error.data.message)
+
       }
     } 
 
@@ -182,6 +185,7 @@ const DataTable = () => {
       refreshData(signer);
     } catch (error) {
       console.log(error);
+      alert(error.error.data.message)
       try {
         setError(error.error.data.message);
       } catch {
@@ -212,6 +216,8 @@ const DataTable = () => {
       return {depositfee, acc_qni_per_share}
     } catch (err) {
       console.log(err.message);
+      alert(err.error.data.message)
+
     }
   }
 
@@ -225,6 +231,8 @@ const DataTable = () => {
       setPoolLength(poollength);
     } catch (err) {
       console.log(err.message);
+      alert(err.error.data.message)
+
     }
   }
 
@@ -235,6 +243,8 @@ const DataTable = () => {
       setfeeaddress(_feeaddr);
     } catch (err) {
       console.log(err.message);
+      alert(err.error.data.message)
+
     }
   }
 
@@ -251,6 +261,8 @@ const DataTable = () => {
       return {rewardDebt, amount};   
     } catch (err) {
       console.log(err.message);
+      alert(err.error.data.message)
+
     }
   }
 
@@ -264,6 +276,8 @@ const DataTable = () => {
       console.log("Dev address: ", devaddr);
     } catch (err) {
       console.log(err.message);
+      alert(err.error.data.message)
+
     }
   }
 
