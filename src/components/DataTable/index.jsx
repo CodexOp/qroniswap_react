@@ -365,7 +365,7 @@ const DataTable = () => {
           content: "Qroni-BNB LP",
         },
         {
-          title: "Earned",
+          title: "Qroni Balance",
           content: `$ ${rewarddebt}`,
         },
         {
