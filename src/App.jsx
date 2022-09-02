@@ -21,7 +21,7 @@ const BSCchainTestnet = {
   id: 97,
   name: "BSC - Testnet",
   network: "BSC",
-  iconUrl: "https://example.com/icon.svg",
+  iconUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Binance_Logo.png/600px-Binance_Logo.png?20201023063027",
   iconBackground: "#fff",
   nativeCurrency: {
     decimals: 18,
