@@ -37,6 +37,10 @@ const Hero = () => {
   const Heading = styled.div`
     margin-bottom: 50px;
 
+    .whitepaper_btn{
+      margin-left:20px;
+    }
+
     h1 {
       font-size: 32px;
       line-height: 1;
@@ -79,7 +83,7 @@ const Hero = () => {
 
               <a
                 href="https://qroniswap.gitbook.io/qroniswap-whitepaper-1/"
-                className="btn btn-light"
+                className="btn btn-light whitepaper_btn"
               >
                 Whitepaper
               </a>

@@ -116,8 +116,8 @@ const Stats = () => {
       heading: "Total Value Locked",
     },
     {
-      count: "$17,388,349,852",
-      heading: "Total Trade Volume",
+      count: volume + ` QNI`,
+      heading: "Total Supply",
     },
     {
       count: marketCap,

@@ -12,10 +12,14 @@ const Movers = () => {
   const [eth, setEth] = useState();
   const [bnb, setBnb] = useState();
   const [usdt, setUsdt] = useState();
+  const [btc24h, setbtc24h] = useState();
+  const [bnb24h, setbnb24h] = useState();
+  const [eth24h, seteth24h] = useState();
+  const [usdt24h, setusd24h] = useState();
   var liveprice = {
     async: true,
     scroosDomain: true,
-    url: "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin%2Cethereum%2Cbinancecoin%2Ctether&vs_currencies=usd",
+    url: "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin%2Cethereum%2Cbinancecoin%2Ctether&vs_currencies=usd&include_24hr_change=true",
     method: "GET",
     headers: {},
   };
@@ -25,6 +29,10 @@ const Movers = () => {
       setBnb(response.binancecoin.usd);
       setEth(response.ethereum.usd);
       setUsdt(response.tether.usd);
+      setbtc24h(response.bitcoin.usd_24h_change.toFixed(2));
+      setbnb24h(response.binancecoin.usd_24h_change.toFixed(2))
+      seteth24h(response.ethereum.usd_24h_change.toFixed(2))
+      setusd24h(response.tether.usd_24h_change.toFixed(2))
     });
   }, []);
 
@@ -41,25 +49,25 @@ const Movers = () => {
       title: "BTC",
       badge: "np",
       count: btc,
-      progress: "1.41%",
+      progress: btc24h,
     },
     {
       icon: Icon2,
       title: "ETH",
       count: eth,
-      progress: "2.22%",
+      progress: eth24h,
     },
     {
       icon: Icon3,
       title: "BNB",
       count: bnb,
-      progress: "0.82%",
+      progress: bnb24h,
     },
     {
       icon: Icon4,
       title: "USDT",
       count: usdt,
-      progress: "0.03%",
+      progress: usdt24h,
     },
   ];
 

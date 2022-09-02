@@ -60,6 +60,12 @@ const DataTable = () => {
   const [amountstaked1, setamountstaked1] = useState(0);
   const [amountstaked2, setamountstaked2] = useState(0);
   const [amountstaked3, setamountstaked3] = useState(0);
+  const [fee1, setfee1] = useState(0);
+  const [fee2, setfee2] = useState(0);
+  const [fee3, setfee3] = useState(0);
+  const [share1, setShare1] = useState(0);
+  const [share2, setShare2] = useState(0);
+  const [share3, setShare3] = useState(0);
 
 
   useEffect(() => {
@@ -86,8 +92,15 @@ const DataTable = () => {
       setamountstaked1(amount1)
       setamountstaked2(amount2)
       setamountstaked3(amount3)
-      console.log ("Hi")
-      console.log(rewards1, rewards2)
+      const {depositfee: fee1, acc_qni_per_share: share1} = await getpoolinfo(0);
+      const {depositfee: fee2, acc_qni_per_share: share2} = await getpoolinfo(1);
+      const {depositfee: fee3, acc_qni_per_share: share3} = await getpoolinfo(2);
+      setfee1(fee1)
+      setfee2(fee2)
+      setfee3(fee3)
+      setShare1(share1)
+      setShare2(share2)
+      setShare3(share3)
       getpoollength();
       getfeeaddress();
       getdevaddr();
@@ -183,9 +196,9 @@ const DataTable = () => {
 
 
 
-  async function getpoolinfo() {
+  async function getpoolinfo(poolids) {
     try {
-      var _poolinfo = await staking.poolInfo(poolId);
+      var _poolinfo = await staking.poolInfo(poolids);
       const token_address = _poolinfo.lpToken.toString();
       const last_reward_block = _poolinfo.lastRewardBlock.toString();
       const acc_qni_per_share = _poolinfo.accQNIPerShare.toString();
@@ -196,6 +209,7 @@ const DataTable = () => {
       setTokenaddress(token_address);
       setLastrewardblock(last_reward_block);
       setQnipershare(acc_qni_per_share);
+      return {depositfee, acc_qni_per_share}
     } catch (err) {
       console.log(err.message);
     }
@@ -272,8 +286,9 @@ const DataTable = () => {
     {
       id: 1,
       stakeorfarmid:0,
-      lockedDuration: "20 Days",
-      PerfomanceFee: "15%",
+      QniPerShare: share1,
+      PerfomanceFee: fee1,
+      tokenlocked:amountstaked1,
 
       list: [
         {
@@ -304,8 +319,10 @@ const DataTable = () => {
     {
       id: 1,
       stakeorfarmid:1,
-      lockedDuration: "30 Days",
-      PerfomanceFee: "15%",
+      QniPerShare: share2,
+      PerfomanceFee: fee2,
+      tokenlocked:amountstaked2,
+
       list: [
         {
           icon: Icon,
@@ -335,8 +352,10 @@ const DataTable = () => {
     {
       id: 1,
       stakeorfarmid:2,
-      lockedDuration: "50 Days",
-      PerfomanceFee: "15%",
+      QniPerShare: share3,
+      PerfomanceFee: fee3,
+      tokenlocked:amountstaked3,
+
       list: [
         {
           icon: Icon,
@@ -593,12 +612,12 @@ const DataTable = () => {
                                 <div className="col">
                                   <div className="d-flex align-items-start flex-column gap-1">
                                     <ListHeading>
-                                      Total Locked: {amountloc}
+                                      Total Locked: {item.tokenlocked}
                                     </ListHeading>
                                     <ListHeading>
-                                      Average Lock Duration: 
+                                      Qni Per Share: {item.QniPerShare} 
                                     </ListHeading>
-                                    <ListHeading>Performance Fee: 15%</ListHeading>
+                                    <ListHeading>Performance Fee: {item.PerfomanceFee}</ListHeading>
                                   </div>
                                 </div>
                                 <div className="col">
@@ -668,7 +687,7 @@ const DataTable = () => {
                                   <div className="text-lg-center text-start">
                                     <ButtonBox>
                                       <h6>Start Farming</h6>
-                                        {iswalletconnected ? <button onClick={() => withdraw(item.stakeorfarmid)}> unstake </button>  : <ConnectButton />}
+                                        {iswalletconnected ? <button onClick={() => withdraw(item.stakeorfarmid)} className="btn btn-gr-primary"> unstake </button>  : <ConnectButton />}
                                        
                                     </ButtonBox>
                                   </div>

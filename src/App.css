@@ -3,6 +3,10 @@
 }
 
 
+.whitepaper_btn{
+    margin-left:15px;
+  }
+
 @media(min-width:777px){
 
 
@@ -10,3 +14,4 @@
     margin-top: 20px;
 }
 }
+
