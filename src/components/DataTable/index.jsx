@@ -63,24 +63,32 @@ const DataTable = ({databool}) => {
   const [reward_pool4, setreward_pool4] = useState(0);
   const [reward_pool5, setreward_pool5] = useState(0);
   const [reward_pool6, setreward_pool6] = useState(0);
+  const [reward_pool7, setreward_pool7] = useState(0);
+  const [reward_pool8, setreward_pool8] = useState(0);
   const [amountstaked1, setamountstaked1] = useState(0);
   const [amountstaked2, setamountstaked2] = useState(0);
   const [amountstaked3, setamountstaked3] = useState(0);
   const [amountstaked4, setamountstaked4] = useState(0);
   const [amountstaked5, setamountstaked5] = useState(0);
   const [amountstaked6, setamountstaked6] = useState(0);
+  const [amountstaked7, setamountstaked7] = useState(0);
+  const [amountstaked8, setamountstaked8] = useState(0);
   const [fee1, setfee1] = useState(0);
   const [fee2, setfee2] = useState(0);
   const [fee3, setfee3] = useState(0);
   const [fee4, setfee4] = useState(0);
   const [fee5, setfee5] = useState(0);
   const [fee6, setfee6] = useState(0);
+  const [fee7, setfee7] = useState(0);
+  const [fee8, setfee8] = useState(0);
   const [share1, setShare1] = useState(0);
   const [share2, setShare2] = useState(0);
   const [share3, setShare3] = useState(0);
   const [share4, setShare4] = useState(0);
   const [share5, setShare5] = useState(0);
   const [share6, setShare6] = useState(0);
+  const [share7, setShare7] = useState(0);
+  const [share8, setShare8] = useState(0);
   const [isStake, setIsStake] = useState(true);
 
   useEffect(() => {
@@ -111,6 +119,8 @@ const DataTable = ({databool}) => {
       const {rewardDebt: rewards4, amount: amount4} = await getuserinfo(3);
       const {rewardDebt: rewards5, amount: amount5} = await getuserinfo(4);
       const {rewardDebt: rewards6, amount: amount6} = await getuserinfo(5);
+      const {rewardDebt: rewards7, amount: amount7} = await getuserinfo(6);
+      const {rewardDebt: rewards8, amount: amount8} = await getuserinfo(7);
       setreward_pool1(rewards1)
       setreward_pool2(rewards2)
       setreward_pool3(rewards3)
@@ -120,27 +130,35 @@ const DataTable = ({databool}) => {
       setamountstaked1(amount1)
       setamountstaked2(amount2)
       setamountstaked3(amount3)
-      setamountstaked4(amount1)
-      setamountstaked5(amount2)
-      setamountstaked6(amount3)
+      setamountstaked4(amount4)
+      setamountstaked5(amount5)
+      setamountstaked6(amount6)
+      setamountstaked7(amount7)
+      setamountstaked8(amount8)
       const {depositfee: fee1, acc_qni_per_share: share1} = await getpoolinfo(0);
       const {depositfee: fee2, acc_qni_per_share: share2} = await getpoolinfo(1);
       const {depositfee: fee3, acc_qni_per_share: share3} = await getpoolinfo(2);
       const {depositfee: fee4, acc_qni_per_share: share4} = await getpoolinfo(3);
       const {depositfee: fee5, acc_qni_per_share: share5} = await getpoolinfo(4);
       const {depositfee: fee6, acc_qni_per_share: share6} = await getpoolinfo(5);
+      const {depositfee: fee7, acc_qni_per_share: share7} = await getpoolinfo(6);
+      const {depositfee: fee8, acc_qni_per_share: share8} = await getpoolinfo(7);
       setfee1(fee1)
       setfee2(fee2)
       setfee3(fee3)
       setfee4(fee4)
       setfee5(fee5)
       setfee6(fee6)
+      setfee7(fee7)
+      setfee8(fee8)
       setShare1(share1)
       setShare2(share2)
       setShare3(share3)
       setShare4(share4)
       setShare5(share5)
       setShare6(share6)
+      setShare5(share7)
+      setShare6(share8)
       getpoollength();
       getfeeaddress();
       getdevaddr();
@@ -536,6 +554,75 @@ const DataTable = ({databool}) => {
       ],
     },
   ];
+  const pooldata = [
+    {
+      id: 1,
+      stakeorfarmid:6,
+      QniPerShare: share7,
+      PerfomanceFee: fee7,
+      tokenlocked:amountstaked7,
+
+      list: [
+        {
+          icon: Icon,
+        },
+        {
+          title: "Earn Qroni",
+          content: "BNB-QNI Lp",
+        },
+        {
+          title: "Qroni Balance",
+          content: `$ ${qronibalance}`,
+        },
+        {
+          title: "APR",
+          content: "300%",
+        },
+        {
+          title: "Total Staked",
+          content: `$ ${amountloc}`,
+        },
+        {
+          title: "Earned",
+          content: `$ ${reward_pool7}`,
+        },
+      ],
+    },
+    {
+      id: 8,
+      stakeorfarmid:7,
+      QniPerShare: share8,
+      PerfomanceFee: fee8,
+      tokenlocked:amountstaked8,
+
+      list: [
+        {
+          icon: Icon,
+        },
+        {
+          title: "Earn Qroni",
+          content: "VCE - QNI Lp",
+        },
+        {
+          title: "Qroni Balance",
+          content: `$ ${qronibalance}`,
+        },
+        {
+          title: "APR",
+          content: "100%",
+        },
+        {
+          title: "Total Staked",
+          content: `$ ${amountloc}`,
+        },
+        {
+          title: "Earned",
+          content: `$ ${reward_pool8}`,
+        },
+      ],
+    },
+    
+  ];
   const Section = styled.section``;
   const TableBox = styled.div`
     width: 100%;
@@ -646,7 +733,7 @@ const DataTable = ({databool}) => {
 
   return (
     <div>
-      {/* {isStake ?  */}
+      {isStake ? 
     <Section>
       <div className="container">
         <div className="row">
@@ -661,7 +748,7 @@ const DataTable = ({databool}) => {
               {/* Input Select */}
               <div className="select-group">
                 <select name="" id="">
-                  <option value="">Choose One</option>
+                  <option value="">Sort</option>
                   <option value="item-1">Hot</option>
                   <option value="item-2">Date</option>
                   <option value="item-3">Rate</option>
@@ -861,7 +948,226 @@ const DataTable = ({databool}) => {
         </div>
       </div>
     </Section>
-    // :<div>not stake</div> }
+    :<div>
+      {/* pool section started  */}
+      <Section>
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-12">
+            {/* Heading */}
+            <HeadingFilter>
+              {/* Input Group */}
+              <div className="search-group">
+                <FiSearch className="me-1 me-md-3" />
+                <input type="text" placeholder="Search" />
+              </div>
+              {/* Input Select */}
+              <div className="select-group">
+                <select name="" id="">
+                  <option value="">Sort</option>
+                  <option value="item-1">Hot</option>
+                  <option value="item-2">Date</option>
+                  <option value="item-3">Rate</option>
+                  <option value="item-4">% APR</option>
+                </select>
+              </div>
+              {/* Input Select */}
+              <div className="checkbox-group align-self-center">
+                <CBCheckbox>
+                  <input id="checkbox-1" type="checkbox" />
+                  <label htmlFor="checkbox-1" className="cb-checkbox">
+                    Staked
+                  </label>
+                </CBCheckbox>
+              </div>
+            </HeadingFilter>
+            <TableBox>
+              <table>
+                <tbody>
+                  {pooldata &&
+                    pooldata.map((item, i) => (
+                      <>
+                        {!laptop ? (
+                          <>
+                            <tr
+                              key={i}
+                              onClick={
+                                isOpen !== null && isOpen === i
+                                  ? onClickRowCloseHandle
+                                  : () => onClickRowOpenHandle(i)
+                              }
+                            >
+                              {item.list &&
+                                item.list.slice(0, 2).map((sub, subIdx) => (
+                                  <td
+                                    key={subIdx}
+                                    className={sub.icon ? "pe-0" : "text-start"}
+                                    width={sub.icon ? 53 : ""}
+                                    colSpan={sub.icon ? 1 : 5}
+                                  >
+                                    {sub.icon && (
+                                      <img src={sub.icon} width={53} alt="" />
+                                    )}
+                                    {sub.title && <h6>{sub.title}</h6>}
+                                    {sub.content && <h4>{sub.content}</h4>}
+                                  </td>
+                                ))}
+                            </tr>
+                            <tr
+                              key={i}
+                              onClick={
+                                isOpen !== null && isOpen === i
+                                  ? onClickRowCloseHandle
+                                  : () => onClickRowOpenHandle(i)
+                              }
+                            >
+                              {item.list &&
+                                item.list.slice(2, 5).map((sub, subIdx) => (
+                                  // {item.list && item.list.map((sub, subIdx) =>(
+                                  <td
+                                    key={subIdx}
+                                    className={sub.icon ? "pe-0" : ""}
+                                    width={sub.icon ? 53 : ""}
+                                  >
+                                    {sub.icon && (
+                                      <img src={sub.icon} width={53} alt="" />
+                                    )}
+                                    {sub.title && <h6>{sub.title}</h6>}
+                                    {sub.content && <h4>{sub.content}</h4>}
+                                  </td>
+                                ))}
+                            </tr>
+                          </>
+                        ) : (
+                          <tr
+                            key={i}
+                            onClick={
+                              isOpen !== null && isOpen === i
+                                ? onClickRowCloseHandle
+                                : () => onClickRowOpenHandle(i)
+                            }
+                          >
+                            {item.list &&
+                              item.list.map((sub, subIdx) => (
+                                // {item.list && item.list.map((sub, subIdx) =>(
+                                <td
+                                  key={subIdx}
+                                  className={sub.icon ? "pe-0" : ""}
+                                  width={sub.icon ? 53 : ""}
+                                >
+                                  {sub.icon && (
+                                    <img src={sub.icon} width={53} alt="" />
+                                  )}
+                                  {sub.title && <h6>{sub.title}</h6>}
+                                  {sub.content && <h4>{sub.content}</h4>}
+                                </td>
+                              ))}
+                          </tr>
+                        )}
+                        {isOpen !== null && isOpen === i && (
+                          <Details>
+                            <td colSpan={6}>
+                              <div className="row align-items-center gy-4">
+                                <div className="col">
+                                  <div className="d-flex align-items-start flex-column gap-1">
+                                    <ListHeading>
+                                      Total Locked: {item.tokenlocked}
+                                    </ListHeading>
+                                    <ListHeading>
+                                      Qni Per Share: {item.QniPerShare} 
+                                    </ListHeading>
+                                    <ListHeading>Performance Fee: {item.PerfomanceFee}</ListHeading>
+                                  </div>
+                                </div>
+                                <div className="col">
+                                  <div className="d-flex align-items-start flex-column gap-1">
+                                    <div>
+                                      <a
+                                        href="#"
+                                        className="text-gr-primary text-nowrap"
+                                      >
+                                        <span>Get Qroni-BNB LP</span>
+                                        <img
+                                          src={LinkIcon}
+                                          className="ms-2"
+                                          alt=""
+                                        />
+                                      </a>
+                                    </div>
+                                    <div>
+                                      <a
+                                        href="#"
+                                        className="text-gr-primary text-nowrap"
+                                      >
+                                        <span>View Contract</span>
+                                        <img
+                                          src={LinkIcon}
+                                          className="ms-2"
+                                          alt=""
+                                        />
+                                      </a>
+                                    </div>
+                                    <div>
+                                      <a
+                                        href="#"
+                                        className="text-gr-primary text-nowrap"
+                                      >
+                                        <span>See Pair Info</span>
+                                        <img
+                                          src={LinkIcon}
+                                          className="ms-2"
+                                          alt=""
+                                        />
+                                      </a>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="col">
+                                  <div className="text-lg-center text-start">
+                                    <ButtonBox>
+                                      <div className="d-flex flex-wrap gap-2 gap-lg-4">
+                                        <div>
+                                          <h6>Qroni Earned</h6>
+                                          <h5>$ {rewarddebt}</h5>
+                                        </div>
+                                        <div className="align-self-end">
+                                          <button
+                                            className="btn btn-gr-primary"
+                                            onClick={() => deposit(item.stakeorfarmid)}
+                                          >
+                                            Harvest
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </ButtonBox>
+                                  </div>
+                                </div>
+                                <div className="col">
+                                  <div className="text-lg-center text-start">
+                                    <ButtonBox>
+                                      <h6>Start Farming</h6>
+                                        {iswalletconnected ? <button onClick={() => withdraw(item.stakeorfarmid)} className="btn btn-gr-primary"> unstake </button>  : <ConnectButton />}
+                                       
+                                    </ButtonBox>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                          </Details>
+                        )}
+                      </>
+                    ))}
+                </tbody>
+              </table>
+            </TableBox>
+          </div>
+        </div>
+      </div>
+    </Section>
+
+
+
+    </div> }
     </div>
   );
 };
