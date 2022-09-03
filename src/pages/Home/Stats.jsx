@@ -73,7 +73,7 @@ const Stats = () => {
       const tokenIn = value.qniTokenAddress;
       console.log(tokenIn)
       const tokenOut = value.wbnb;
-      const amountIn = ethers.utils.parseUnits("1", 5);
+      const amountIn = ethers.utils.parseUnits("1", 9);
       let amounts = await router.getAmountsOut(amountIn, [tokenIn, tokenOut]);
       let busd = value.busd;
       let amounts2 = await router.getAmountsOut(amounts[1], [tokenOut, busd]);

@@ -147,7 +147,7 @@ const Movers = () => {
         <div className="row">
           <div className="col-lg-12">
             <Heading>
-              <h2>Top Movers</h2>
+              <h2>Top Tokens</h2>
             </Heading>
           </div>
         </div>

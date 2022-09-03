@@ -11,10 +11,10 @@ import value from "../../value.json";
 import { useSigner, useProvider, useContract, useBalance } from "wagmi";
 import { _nameprepTableA1 } from "@ethersproject/strings/lib/idna";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useHistory ,useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import { event } from "jquery";
 const DataTable = ({databool}) => {
-  const location = useLocation()
-  console.log(location.pathname)
+  const location = useLocation();
  
   const [isOpen, setIsOpen] = useState(null);
   const [laptop, setLaptop] = useState(
@@ -89,6 +89,7 @@ const DataTable = ({databool}) => {
   const [share7, setShare7] = useState(0);
   const [share8, setShare8] = useState(0);
   const [isStake, setIsStake] = useState(true);
+  const [inputStakeAmount, setInputStakeAmount] = useState(0);
 
   useEffect(() => {
     refreshData(signer);
@@ -100,6 +101,8 @@ const DataTable = ({databool}) => {
       token = new ethers.Contract(value.qniTokenAddress, tokenAbi, signer);
       setIsStake(true)
     }
+
+
 
   if(signer){
     setIswalletconnected(true)
@@ -128,6 +131,8 @@ const DataTable = ({databool}) => {
       setreward_pool4(rewards4)
       setreward_pool5(rewards5)
       setreward_pool6(rewards6)
+      setreward_pool7(rewards7)
+      setreward_pool8(rewards8)
       setamountstaked1(amount1)
       setamountstaked2(amount2)
       setamountstaked3(amount3)
@@ -158,8 +163,8 @@ const DataTable = ({databool}) => {
       setShare4(share4)
       setShare5(share5)
       setShare6(share6)
-      setShare5(share7)
-      setShare6(share8)
+      setShare7(share7)
+      setShare8(share8)
       getpoollength();
       getfeeaddress();
       getdevaddr();
@@ -168,12 +173,18 @@ const DataTable = ({databool}) => {
     }
   }
 
+  const hanglechange = (event) => {
+    setInputStakeAmount(event.target.value)
+  }
+
+
   async function deposit(poolId_selected) {
     try {
       console.log (poolId_selected)
-        const amount = qronibalance;
+          console.log(inputStakeAmount)
+        const amount = inputStakeAmount;
         await approve();
-        let _amount = ethers.utils.parseEther(amount.toString());
+        let _amount = ethers.utils.parseUnits(amount.toString(), 9);
         let tx = await staking.deposit(poolId_selected, _amount);
         let receipt = await tx.wait();
         console.log("Stake Tx receipt: ", receipt);
@@ -236,9 +247,12 @@ const DataTable = ({databool}) => {
     } 
 
 
-  async function withdraw(poolId_selected) {
+  async function withdraw(poolId_selected, amountunstake) {
     try {
-      let tx = await staking.withdraw(poolId_selected, amountloc);
+      console.log(`amount to unstake`+amountunstake);
+      const amountwithdraw = ethers.utils.parseUnits(amountunstake.toString(), 9)
+      console.log(amountwithdraw)
+      let tx = await staking.withdraw(poolId_selected, amountwithdraw);
       let receipt = await tx.wait();
       console.log("Withdraw tx receipt: ", receipt);
       refreshData(signer);
@@ -275,7 +289,7 @@ const DataTable = ({databool}) => {
       return {depositfee, acc_qni_per_share}
     } catch (err) {
       console.log(err);
-      return {depositfee: 0, acc_qni_per_share: 0}
+      return {depositfee: 0, acc_qni_per_share: 0, }
     }
   }
 
@@ -310,10 +324,12 @@ const DataTable = ({databool}) => {
     try {
       var _userinfo = await staking.userInfo(poolidindex, signer.getAddress());
       console.log(_userinfo)
-      const rewardDebt = await _userinfo.rewardDebt.toNumber();
-      const amount = await _userinfo.amount.toNumber();
+      const rewardfetched = await _userinfo.rewardDebt;
+      const rewardDebt = ethers.utils.formatUnits(rewardfetched.toString(), 9);
+      const amountconverted = await _userinfo.amount;
+      const amount = ethers.utils.formatUnits(amountconverted.toString(), 9)
+      console.log(amountconverted)
       setRewarddebt(rewardDebt);
-      setAmountloc(amount);
       console.log("Reward debt ", rewardDebt);
       console.log("Amount: ", amount);
       return {rewardDebt, amount};   
@@ -368,7 +384,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Earn Qroni",
-          content: "Stake ETH",
+          content: "Stake QNI",
         },
         {
           title: "Qroni Balance",
@@ -380,7 +396,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Total Staked",
-          content: `$ ${amountloc}`,
+          content: `$ ${amountstaked1}`,
         },
         {
           title: "Earned",
@@ -393,7 +409,7 @@ const DataTable = ({databool}) => {
       stakeorfarmid:1,
       QniPerShare: share2,
       PerfomanceFee: fee2,
-      tokenlocked:amountstaked2,
+      tokenlocked:amountstaked1,
 
       list: [
         {
@@ -413,7 +429,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Total Staked",
-          content: `$ ${amountloc}`,
+          content: `$ ${amountstaked2}`,
         },
         {
           title: "Earned",
@@ -438,7 +454,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Qroni Balance",
-          content: `$ ${rewarddebt}`,
+          content: `$ ${qronibalance}`,
         },
         {
           title: "APR",
@@ -446,7 +462,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Total Staked",
-          content: `$ ${amountloc}`,
+          content: `$ ${amountstaked3}`,
         },
         {
           title: "Earned",
@@ -471,7 +487,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Qroni Balance",
-          content: `$ ${rewarddebt}`,
+          content: `$ ${qronibalance}`,
         },
         {
           title: "APR",
@@ -479,7 +495,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Total Staked",
-          content: `$ ${amountloc}`,
+          content: `$ ${amountstaked4}`,
         },
         {
           title: "Earned",
@@ -504,7 +520,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Qroni Balance",
-          content: `$ ${rewarddebt}`,
+          content: `$ ${qronibalance}`,
         },
         {
           title: "APR",
@@ -512,7 +528,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Total Staked",
-          content: `$ ${amountloc}`,
+          content: `$ ${amountstaked5}`,
         },
         {
           title: "Earned",
@@ -533,11 +549,11 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Earn Qroni",
-          content: "Stake ETH",
+          content: "Stake CAKE",
         },
         {
           title: "Qroni Balance",
-          content: `$ ${rewarddebt}`,
+          content: `$ ${qronibalance}`,
         },
         {
           title: "APR",
@@ -545,7 +561,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Total Staked",
-          content: `$ ${amountloc}`,
+          content: `$ ${amountstaked6}`,
         },
         {
           title: "Earned",
@@ -580,7 +596,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Total Staked",
-          content: `$ ${amountloc}`,
+          content: `$ ${amountstaked7}`,
         },
         {
           title: "Earned",
@@ -613,7 +629,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Total Staked",
-          content: `$ ${amountloc}`,
+          content: `$ ${amountstaked8}`,
         },
         {
           title: "Earned",
@@ -908,6 +924,8 @@ const DataTable = ({databool}) => {
                                 </div>
                                 <div className="col">
                                   <div className="text-lg-center text-start">
+                                  <input placeholder="Amount" value={inputStakeAmount} type="number" className="amount_input" onChange={e => hanglechange(e)} autoFocus="autofocus"/>
+
                                     <ButtonBox>
                                       <div className="d-flex flex-wrap gap-2 gap-lg-4">
                                         <div>
@@ -929,8 +947,9 @@ const DataTable = ({databool}) => {
                                 <div className="col">
                                   <div className="text-lg-center text-start">
                                     <ButtonBox>
+                                      
                                       <h6>Start Farming</h6>
-                                        {iswalletconnected ? <button onClick={() => withdraw(item.stakeorfarmid)} className="btn btn-gr-primary"> unstake </button>  : <ConnectButton />}
+                                        {iswalletconnected ? <button onClick={() => withdraw(item.stakeorfarmid, item.tokenlocked)} className="btn btn-gr-primary"> unstake </button>  : <ConnectButton />}
                                        
                                     </ButtonBox>
                                   </div>
@@ -1125,6 +1144,8 @@ const DataTable = ({databool}) => {
                                 <div className="col">
                                   <div className="text-lg-center text-start">
                                     <ButtonBox>
+                                    <input onChange={event=>{hanglechange(event.target.value)}}  placeholder="Amount" type="number" className="amount_input" autoFocus="autofocus"/>
+
                                       <div className="d-flex flex-wrap gap-2 gap-lg-4">
                                         <div>
                                           <h6>Qroni Earned</h6>
@@ -1146,7 +1167,7 @@ const DataTable = ({databool}) => {
                                   <div className="text-lg-center text-start">
                                     <ButtonBox>
                                       <h6>Start Farming</h6>
-                                        {iswalletconnected ? <button onClick={() => withdraw(item.stakeorfarmid)} className="btn btn-gr-primary"> unstake </button>  : <ConnectButton />}
+                                        {iswalletconnected ? <button onClick={() => withdraw(item.stakeorfarmid, item.tokenlocked)} className="btn btn-gr-primary"> unstake </button>  : <ConnectButton />}
                                        
                                     </ButtonBox>
                                   </div>

@@ -46,6 +46,12 @@
     margin-top: 30px;
   }
 
+  .amount_input{
+    margin-bottom: 5px;
+    width: 100%;
+
+  }
+
  
 @media(min-width:777px){
 
