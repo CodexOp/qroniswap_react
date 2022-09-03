@@ -46,7 +46,7 @@ const Farming =()=> {
       </NavTab>
       <HeroCover heading="Farms" content="Stake LP tokens to earn."/>
      
-      <DataTable databool={true}/>
+      <DataTable databool={false}/>
       
     </Main>
     <Footer />

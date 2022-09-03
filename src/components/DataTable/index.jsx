@@ -116,55 +116,91 @@ const DataTable = ({databool}) => {
       signer.getAddress().then((res) => {
         setMyaddress(res);
       });
-      checkApproved();
-      const {rewardDebt: rewards1, amount: amount1} = await getuserinfo(0);
-      const {rewardDebt: rewards2, amount: amount2} = await getuserinfo(1);
-      const {rewardDebt: rewards3, amount: amount3} = await getuserinfo(2);
-      const {rewardDebt: rewards4, amount: amount4} = await getuserinfo(3);
-      const {rewardDebt: rewards5, amount: amount5} = await getuserinfo(4);
+
+      const fetch1 = async() => {
+        const {rewardDebt: rewards1, amount: amount1} = await getuserinfo(0);
+        const {depositfee: fee1, acc_qni_per_share: share1} = await getpoolinfo(0);
+        setreward_pool1(rewards1)
+        setamountstaked1(amount1)
+        setfee1(fee1)
+        setShare1(share1)
+      }
+      
+      const fetch2 = async() => {
+        const {rewardDebt: rewards2, amount: amount2} = await getuserinfo(1);
+        const {depositfee: fee2, acc_qni_per_share: share2} = await getpoolinfo(1);
+        setreward_pool1(rewards2)
+        setamountstaked2(amount2)
+        setfee2(fee2)
+        setShare2(share2)
+      }
+      
+      const fetch3 = async() => {
+        const {rewardDebt: rewards3, amount: amount3} = await getuserinfo(2);
+        setreward_pool3(rewards3)
+        setamountstaked3(amount3)
+        const {depositfee: fee3, acc_qni_per_share: share3} = await getpoolinfo(2);
+        setfee3(fee3)
+        setShare3(share3)
+      }
+
+
+      const fetch4 = async() => {
+        const {rewardDebt: rewards4, amount: amount4} = await getuserinfo(3);
+        setreward_pool4(rewards4)
+        setamountstaked4(amount4)
+        const {depositfee: fee4, acc_qni_per_share: share4} = await getpoolinfo(3);
+        setfee4(fee4)
+        setShare4(share4)
+      }
+
+      const fetch5 = async() => {
+        const {rewardDebt: rewards5, amount: amount5} = await getuserinfo(4);
+        setreward_pool5(rewards5)
+        setamountstaked5(amount5)
+        const {depositfee: fee5, acc_qni_per_share: share5} = await getpoolinfo(4);
+        setfee5(fee5)
+        setShare5(share5)  
+      }
+
+      const fetch6 = async() => {
       const {rewardDebt: rewards6, amount: amount6} = await getuserinfo(5);
-      const {rewardDebt: rewards7, amount: amount7} = await getuserinfo(6);
-      const {rewardDebt: rewards8, amount: amount8} = await getuserinfo(7);
-      setreward_pool1(rewards1)
-      setreward_pool2(rewards2)
-      setreward_pool3(rewards3)
-      setreward_pool4(rewards4)
-      setreward_pool5(rewards5)
       setreward_pool6(rewards6)
-      setreward_pool7(rewards7)
-      setreward_pool8(rewards8)
-      setamountstaked1(amount1)
-      setamountstaked2(amount2)
-      setamountstaked3(amount3)
-      setamountstaked4(amount4)
-      setamountstaked5(amount5)
       setamountstaked6(amount6)
-      setamountstaked7(amount7)
-      setamountstaked8(amount8)
-      const {depositfee: fee1, acc_qni_per_share: share1} = await getpoolinfo(0);
-      const {depositfee: fee2, acc_qni_per_share: share2} = await getpoolinfo(1);
-      const {depositfee: fee3, acc_qni_per_share: share3} = await getpoolinfo(2);
-      const {depositfee: fee4, acc_qni_per_share: share4} = await getpoolinfo(3);
-      const {depositfee: fee5, acc_qni_per_share: share5} = await getpoolinfo(4);
       const {depositfee: fee6, acc_qni_per_share: share6} = await getpoolinfo(5);
-      const {depositfee: fee7, acc_qni_per_share: share7} = await getpoolinfo(6);
-      const {depositfee: fee8, acc_qni_per_share: share8} = await getpoolinfo(7);
-      setfee1(fee1)
-      setfee2(fee2)
-      setfee3(fee3)
-      setfee4(fee4)
-      setfee5(fee5)
       setfee6(fee6)
-      setfee7(fee7)
-      setfee8(fee8)
-      setShare1(share1)
-      setShare2(share2)
-      setShare3(share3)
-      setShare4(share4)
-      setShare5(share5)
       setShare6(share6)
+      }
+
+
+      const fetch7 = async() => {
+      const {rewardDebt: rewards7, amount: amount7} = await getuserinfo(6);
+      setreward_pool7(rewards7)
+      setamountstaked7(amount7)
+      const {depositfee: fee7, acc_qni_per_share: share7} = await getpoolinfo(6);
+      setfee7(fee7)
       setShare7(share7)
-      setShare8(share8)
+  
+      }
+
+      const fetch8 = async() => {
+        const {rewardDebt: rewards8, amount: amount8} = await getuserinfo(7);
+        setreward_pool8(rewards8)
+        setamountstaked8(amount8)
+        const {depositfee: fee8, acc_qni_per_share: share8} = await getpoolinfo(7);
+        setfee8(fee8)
+        setShare8(share8)
+  
+      }
+      checkApproved();
+      fetch1()
+      fetch2()
+      fetch3()
+      fetch4()
+      fetch5()
+      fetch6()
+      fetch7()
+      fetch8()
       getpoollength();
       getfeeaddress();
       getdevaddr();
