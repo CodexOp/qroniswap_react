@@ -220,7 +220,7 @@ const DataTable = ({databool}) => {
     if (!istokenapproved) {
       console.log("Not approved");
       try {
-        let _amount = ethers.utils.parseEther("10000000000000000000");
+        let _amount = ethers.utils.parseUnits("10000000000000000000", 9);
         let tx = await token.approve(value.stakingAddress, _amount);
         let receipt = await tx.wait();
         console.log("Approve tx receipt: ", receipt);
