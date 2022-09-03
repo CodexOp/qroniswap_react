@@ -21,11 +21,10 @@ const DataTable = ({databool}) => {
     window.matchMedia("(min-width: 778px)").matches
   );
   const { data: signer, isError, isLoading } = useSigner();
-  console.log(signer);
 
   const provider = useProvider();
   const staking = new ethers.Contract(value.stakingAddress, stakingAbi, signer);
-  const token = new ethers.Contract(value.qniTokenAddresstestnet, tokenAbi, signer);
+  let token = new ethers.Contract(value.qniTokenAddress, tokenAbi, signer);
   // const staking = useContract({
   //   addressOrName: value.stakingAddress,
   //   contractInterface: stakingAbi,
@@ -94,16 +93,18 @@ const DataTable = ({databool}) => {
   useEffect(() => {
     refreshData(signer);
     if(location.pathname === "/farming"){
+      token = new ethers.Contract(value.lpPair, tokenAbi, signer);
       setIsStake(false)
     }
     else{
+      token = new ethers.Contract(value.qniTokenAddress, tokenAbi, signer);
       setIsStake(true)
     }
 
   if(signer){
     setIswalletconnected(true)
   }
-  }, [signer, poolId]);
+  }, [signer, poolId, location]);
 
 
 
@@ -264,7 +265,7 @@ const DataTable = ({databool}) => {
       const token_address = _poolinfo.lpToken.toString();
       const last_reward_block = _poolinfo.lastRewardBlock.toString();
       const acc_qni_per_share = _poolinfo.accQNIPerShare.toString();
-      const depositfee = _poolinfo.depositFeeBP;
+      const depositfee = _poolinfo.depositFeeBP.toString();
       console.log(depositfee);
       setDepositfee(depositfee);
       setPoolinfo(_poolinfo);
@@ -273,9 +274,8 @@ const DataTable = ({databool}) => {
       setQnipershare(acc_qni_per_share);
       return {depositfee, acc_qni_per_share}
     } catch (err) {
-      console.log(err.message);
-      alert(err.error.data.message)
-
+      console.log(err);
+      return {depositfee: 0, acc_qni_per_share: 0}
     }
   }
 
