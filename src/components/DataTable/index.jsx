@@ -216,6 +216,7 @@ const DataTable = ({databool}) => {
       getpoollength();
       getfeeaddress();
       getdevaddr();
+      getqroniBalance()
       
     }
   }
@@ -247,7 +248,6 @@ const DataTable = ({databool}) => {
   }
 
 
-
   async function approve(tokens) {
     try{
     let userAddress = await signer.getAddress()
@@ -257,7 +257,7 @@ const DataTable = ({databool}) => {
       console.log("approved", totaltokenapproved);
     }
     else{
-      let _amount = ethers.utils.parseUnits("10000000000000000000", 9);
+      let _amount = ethers.utils.parseUnits("10000000000000000000", 18);
       let tx = await tokens.approve(value.stakingAddress, _amount);
       let receipt = await tx.wait();
       console.log("Approve tx receipt: ", receipt);
@@ -269,29 +269,46 @@ const DataTable = ({databool}) => {
   }
 
 
+  async function getqroniBalance(){
+    try{
+      let qroni = await token.balanceOf(await signer.getAddress());
+      const qroniconverted = ethers.utils.formatUnits(qroni, 9)
+      console.log("Qroni Balance:",qroniconverted)
+      setqronibalance(qroniconverted);
+    }
+    catch(err){
+      try{
+        alert(err.error.data.message);
+      }
+
+      catch{
+        alert('Something Went Wro')
+      }
+    }
+    
+  }
 
   async function getAllTokens() {
       try {
-        // let qroni = await token.balanceOf(await signer.getAddress());
+       
         let btc = await btcContract.balanceOf(await signer.getAddress());
         let eth = await ethContract.balanceOf(await signer.getAddress());
         let cake = await cakeContract.balanceOf(await signer.getAddress());
         let bnb = await bnbContract.balanceOf(await signer.getAddress());
         let vce = await vceContract.balanceOf(await signer.getAddress());
-        // const qroniconverted = ethers.utils.formatUnits(qroni, 9)
+       
         const btcConverted = ethers.utils.formatUnits(btc, 18)
         const ethConverted = ethers.utils.formatUnits(eth, 18)
         const cakeConverted = ethers.utils.formatUnits(cake, 18)
         const bnbConverted = ethers.utils.formatUnits(bnb, 18)
         const vceConverted = ethers.utils.formatUnits(vce, 18)
-        // console.log("Qroni Balance:",qroniconverted)
+       
         console.log("BTC Balance:", btcConverted)
         console.log("ETH Balance:", ethConverted)
         console.log("CAKE Balance:", cakeConverted)
         console.log("BNB Balance:", bnbConverted)
         console.log("VCE Balance:", vceConverted)
         
-        // setqronibalance(qroniconverted)
         setBtcBalance(btcConverted)
         setEthBalance(ethConverted)
         setBnbBalance(bnbConverted)
@@ -452,7 +469,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Qroni Balance",
-          content: `$ ${qronibalance}`,
+          content: `${qronibalance}`,
         },
         {
           title: "APR",
@@ -460,11 +477,11 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Total Staked",
-          content: `$ ${amountstaked1}`,
+          content: `${amountstaked1}`,
         },
         {
           title: "Earned",
-          content: `$ ${reward_pool1}`,
+          content: `${reward_pool1}`,
         },
       ],
     },
@@ -486,7 +503,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "VCE Balance",
-          content: `$ ${vceBalance}`,
+          content: `${vceBalance}`,
         },
         {
           title: "APR",
@@ -494,11 +511,11 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Total Staked",
-          content: `$ ${amountstaked2}`,
+          content: `${amountstaked2}`,
         },
         {
           title: "Earned",
-          content: `$ ${reward_pool2}`,
+          content: `${reward_pool2}`,
         },
       ],
     },
@@ -520,7 +537,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "WBNB Balance",
-          content: `$ ${bnbBalance}`,
+          content: `${bnbBalance}`,
         },
         {
           title: "APR",
@@ -528,11 +545,11 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Total Staked",
-          content: `$ ${amountstaked3}`,
+          content: `${amountstaked3}`,
         },
         {
           title: "Earned",
-          content: `$ ${reward_pool3}`,
+          content: `${reward_pool3}`,
         },
       ],
     },
@@ -555,7 +572,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "BTC Balance",
-          content: `$ ${btcBalance}`,
+          content: `${btcBalance}`,
         },
         {
           title: "APR",
@@ -563,11 +580,11 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Total Staked",
-          content: `$ ${amountstaked4}`,
+          content: `${amountstaked4}`,
         },
         {
           title: "Earned",
-          content: `$ ${reward_pool4}`,
+          content: `${reward_pool4}`,
         },
       ],
     },
@@ -590,7 +607,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "ETH Balance",
-          content: `$ ${ethBalance}`,
+          content: `${ethBalance}`,
         },
         {
           title: "APR",
@@ -598,11 +615,11 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Total Staked",
-          content: `$ ${amountstaked5}`,
+          content: `${amountstaked5}`,
         },
         {
           title: "Earned",
-          content: `$ ${reward_pool5}`,
+          content: `${reward_pool5}`,
         },
       ],
     },
@@ -625,7 +642,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "CAKE Balance",
-          content: `$ ${cakeBalance}`,
+          content: `${cakeBalance}`,
         },
         {
           title: "APR",
@@ -633,11 +650,11 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Total Staked",
-          content: `$ ${amountstaked6}`,
+          content: `${amountstaked6}`,
         },
         {
           title: "Earned",
-          content: `$ ${reward_pool6}`,
+          content: `${reward_pool6}`,
         },
       ],
     },
@@ -662,7 +679,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Qroni Balance",
-          content: `$ ${qronibalance}`,
+          content: `${qronibalance}`,
         },
         {
           title: "APR",
@@ -670,11 +687,11 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Total Staked",
-          content: `$ ${amountstaked7}`,
+          content: `${amountstaked7}`,
         },
         {
           title: "Earned",
-          content: `$ ${reward_pool7}`,
+          content: `${reward_pool7}`,
         },
       ],
     },
@@ -696,7 +713,7 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Qroni Balance",
-          content: `$ ${qronibalance}`,
+          content: `${qronibalance}`,
         },
         {
           title: "APR",
@@ -704,11 +721,11 @@ const DataTable = ({databool}) => {
         },
         {
           title: "Total Staked",
-          content: `$ ${amountstaked8}`,
+          content: `${amountstaked8}`,
         },
         {
           title: "Earned",
-          content: `$ ${reward_pool8}`,
+          content: `${reward_pool8}`,
         },
       ],
     },
