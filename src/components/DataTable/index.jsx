@@ -6,6 +6,7 @@ import LinkIcon from "./img/link-icon.svg";
 import { FiSearch } from "react-icons/fi";
 import { ethers } from "ethers";
 import stakingAbi from "../../stakingAbi.json";
+import erc20 from "../../erc20.json";
 import tokenAbi from "../../tokenAbi.json";
 import value from "../../value.json";
 import { useSigner, useProvider, useContract, useBalance } from "wagmi";
@@ -25,6 +26,11 @@ const DataTable = ({databool}) => {
   const provider = useProvider();
   const staking = new ethers.Contract(value.stakingAddress, stakingAbi, signer);
   let token = new ethers.Contract(value.qniTokenAddress, tokenAbi, signer);
+  const ethContract = new ethers.Contract(value.eth, erc20, signer);
+  const bnbContract = new ethers.Contract(value.bnb, erc20, signer);
+  const cakeContract = new ethers.Contract(value.cake, erc20, signer);
+  const btcContract = new ethers.Contract(value.btc, erc20, signer);
+  const vceContract = new ethers.Contract(value.btc, erc20, signer);
   // const staking = useContract({
   //   addressOrName: value.stakingAddress,
   //   contractInterface: stakingAbi,
@@ -37,6 +43,12 @@ const DataTable = ({databool}) => {
   //   contractInterface: tokenAbi,
   //   signerOrProvider: provider,
   // });
+
+  const [btcBalance, setBtcBalance] = useState();
+  const [ethBalance, setEthBalance] = useState();
+  const [vceBalance, setVceBalance] = useState();
+  const [cakeBalance, setCakeBalance] = useState();
+  const [bnbBalance, setBnbBalance] = useState();
 
   const [iswalletconnected, setIswalletconnected] = useState(false);
   const [poolId, setPoolId] = useState(0);
@@ -116,6 +128,7 @@ const DataTable = ({databool}) => {
       signer.getAddress().then((res) => {
         setMyaddress(res);
       });
+      getAllTokens();
 
       const fetch1 = async() => {
         const {rewardDebt: rewards1, amount: amount1} = await getuserinfo(0);
@@ -192,7 +205,6 @@ const DataTable = ({databool}) => {
         setShare8(share8)
   
       }
-      checkApproved();
       fetch1()
       fetch2()
       fetch3()
@@ -204,7 +216,6 @@ const DataTable = ({databool}) => {
       getpoollength();
       getfeeaddress();
       getdevaddr();
-      getUserQroni();
       
     }
   }
@@ -214,12 +225,12 @@ const DataTable = ({databool}) => {
   }
 
 
-  async function deposit(poolId_selected) {
+  async function deposit(poolId_selected, tokens) {
     try {
       console.log (poolId_selected)
           console.log(inputStakeAmount)
         const amount = inputStakeAmount;
-        await approve();
+        await approve(tokens);
         let _amount = ethers.utils.parseUnits(amount.toString(), 9);
         let tx = await staking.deposit(poolId_selected, _amount);
         let receipt = await tx.wait();
@@ -227,58 +238,68 @@ const DataTable = ({databool}) => {
         refreshData(signer);
     } catch (error) {
       console.log(error);
-      alert(error.error.data.message)
       try {
-        setError(error.error.data.message);
+        alert(error.error.data.message);
       } catch {
-        setError("Something went wrong, please try again!");
+        console.log("Something went wrong, please try again!");
       }
     }
   }
 
 
-  const checkApproved = async() => {
+
+  async function approve(tokens) {
+    try{
     let userAddress = await signer.getAddress()
-    const isApproved = await token.allowance(userAddress, value.stakingAddress);
+    const isApproved = await tokens.allowance(userAddress, value.stakingAddress);
     const totaltokenapproved = isApproved.toString()
     if(totaltokenapproved.length > 2){
       console.log("approved", totaltokenapproved);
-      settokenapproved(true)
     }
     else{
-      console.log("Not Approved",totaltokenapproved);
-      settokenapproved(false)
-
+      let _amount = ethers.utils.parseUnits("10000000000000000000", 9);
+      let tx = await tokens.approve(value.stakingAddress, _amount);
+      let receipt = await tx.wait();
+      console.log("Approve tx receipt: ", receipt);
     }
   }
-
-  async function approve() {
-    if (!istokenapproved) {
-      console.log("Not approved");
-      try {
-        let _amount = ethers.utils.parseUnits("10000000000000000000", 9);
-        let tx = await token.approve(value.stakingAddress, _amount);
-        let receipt = await tx.wait();
-        console.log("Approve tx receipt: ", receipt);
-      } catch (error) {
-       alert(error.error.data.message)
-      }
-    } else {
-      console.log("already approved");
-    }
+  catch(err){
+    console.log(err)
+  }
   }
 
-  async function getUserQroni() {
+
+
+  async function getAllTokens() {
       try {
-        let qroni = await token.balanceOf(await signer.getAddress());
-        console.log ("Qroni: ", qroni)
-        const qroniconverted = ethers.utils.formatUnits(qroni, 9)
-        console.log(qroniconverted)
-        setqronibalance(qroniconverted)
+        // let qroni = await token.balanceOf(await signer.getAddress());
+        let btc = await btcContract.balanceOf(await signer.getAddress());
+        let eth = await ethContract.balanceOf(await signer.getAddress());
+        let cake = await cakeContract.balanceOf(await signer.getAddress());
+        let bnb = await bnbContract.balanceOf(await signer.getAddress());
+        let vce = await vceContract.balanceOf(await signer.getAddress());
+        // const qroniconverted = ethers.utils.formatUnits(qroni, 9)
+        const btcConverted = ethers.utils.formatUnits(btc, 18)
+        const ethConverted = ethers.utils.formatUnits(eth, 18)
+        const cakeConverted = ethers.utils.formatUnits(cake, 18)
+        const bnbConverted = ethers.utils.formatUnits(bnb, 18)
+        const vceConverted = ethers.utils.formatUnits(vce, 18)
+        // console.log("Qroni Balance:",qroniconverted)
+        console.log("BTC Balance:", btcConverted)
+        console.log("ETH Balance:", ethConverted)
+        console.log("CAKE Balance:", cakeConverted)
+        console.log("BNB Balance:", bnbConverted)
+        console.log("VCE Balance:", vceConverted)
+        
+        // setqronibalance(qroniconverted)
+        setBtcBalance(btcConverted)
+        setEthBalance(ethConverted)
+        setBnbBalance(bnbConverted)
+        setCakeBalance(cakeConverted)
+        setVceBalance(vceConverted)
+
       } catch (error) {
         console.log(error);
-        alert(error.error.data.message)
-
       }
     } 
 
@@ -294,11 +315,10 @@ const DataTable = ({databool}) => {
       refreshData(signer);
     } catch (error) {
       console.log(error);
-      alert(error.error.data.message)
       try {
-        setError(error.error.data.message);
+        alert(error.error.data.message);
       } catch {
-        setError("Something went wrong, please try again!");
+        console.log("Something went wrong, please try again!");
       }
     }
   }
@@ -338,9 +358,11 @@ const DataTable = ({databool}) => {
       console.log("pool length: ", poollength);
       setPoolLength(poollength);
     } catch (err) {
-      console.log(err.message);
-      alert(err.error.data.message)
-
+      try{
+        alert(err.error.data.message);
+      } catch {
+        console.log("Something went wrong, please try again!");
+      }
     }
   }
 
@@ -351,8 +373,11 @@ const DataTable = ({databool}) => {
       setfeeaddress(_feeaddr);
     } catch (err) {
       console.log(err.message);
-      alert(err.error.data.message)
-
+      try{
+        alert(err.error.data.message);
+      } catch {
+        console.log("Something went wrong, please try again!");
+      }
     }
   }
 
@@ -371,8 +396,7 @@ const DataTable = ({databool}) => {
       return {rewardDebt, amount};   
     } catch (err) {
       console.log(err.message);
-      alert(err.error.data.message)
-
+      return {rewardDebt: 0, amount: 0}
     }
   }
 
@@ -386,8 +410,11 @@ const DataTable = ({databool}) => {
       console.log("Dev address: ", devaddr);
     } catch (err) {
       console.log(err.message);
-      alert(err.error.data.message)
-
+      try{
+        alert(err.error.data.message);
+      } catch {
+        console.log("Something went wrong, please try again!");
+      }
     }
   }
 
@@ -413,6 +440,7 @@ const DataTable = ({databool}) => {
       QniPerShare: share1,
       PerfomanceFee: fee1,
       tokenlocked:amountstaked1,
+      bsctoken:token,
 
       list: [
         {
@@ -446,6 +474,7 @@ const DataTable = ({databool}) => {
       QniPerShare: share2,
       PerfomanceFee: fee2,
       tokenlocked:amountstaked1,
+      bsctoken:vceContract,
 
       list: [
         {
@@ -456,8 +485,8 @@ const DataTable = ({databool}) => {
           content: "Stake VCE",
         },
         {
-          title: "Qroni Balance",
-          content: `$ ${qronibalance}`,
+          title: "VCE Balance",
+          content: `$ ${vceBalance}`,
         },
         {
           title: "APR",
@@ -479,6 +508,7 @@ const DataTable = ({databool}) => {
       QniPerShare: share3,
       PerfomanceFee: fee3,
       tokenlocked:amountstaked3,
+      bsctoken:bnbContract,
 
       list: [
         {
@@ -489,8 +519,8 @@ const DataTable = ({databool}) => {
           content: "Stake BNB",
         },
         {
-          title: "Qroni Balance",
-          content: `$ ${qronibalance}`,
+          title: "WBNB Balance",
+          content: `$ ${bnbBalance}`,
         },
         {
           title: "APR",
@@ -512,6 +542,8 @@ const DataTable = ({databool}) => {
       QniPerShare: share4,
       PerfomanceFee: fee4,
       tokenlocked:amountstaked4,
+      bsctoken:btcContract,
+
 
       list: [
         {
@@ -522,8 +554,8 @@ const DataTable = ({databool}) => {
           content: "Stake BTC",
         },
         {
-          title: "Qroni Balance",
-          content: `$ ${qronibalance}`,
+          title: "BTC Balance",
+          content: `$ ${btcBalance}`,
         },
         {
           title: "APR",
@@ -545,6 +577,8 @@ const DataTable = ({databool}) => {
       QniPerShare: share5,
       PerfomanceFee: fee5,
       tokenlocked:amountstaked5,
+      bsctoken:ethContract,
+
 
       list: [
         {
@@ -555,8 +589,8 @@ const DataTable = ({databool}) => {
           content: "Stake ETH",
         },
         {
-          title: "Qroni Balance",
-          content: `$ ${qronibalance}`,
+          title: "ETH Balance",
+          content: `$ ${ethBalance}`,
         },
         {
           title: "APR",
@@ -578,6 +612,8 @@ const DataTable = ({databool}) => {
       QniPerShare: share6,
       PerfomanceFee: fee6,
       tokenlocked:amountstaked6,
+      bsctoken:cakeContract,
+
 
       list: [
         {
@@ -588,8 +624,8 @@ const DataTable = ({databool}) => {
           content: "Stake CAKE",
         },
         {
-          title: "Qroni Balance",
-          content: `$ ${qronibalance}`,
+          title: "CAKE Balance",
+          content: `$ ${cakeBalance}`,
         },
         {
           title: "APR",
@@ -613,6 +649,8 @@ const DataTable = ({databool}) => {
       QniPerShare: share7,
       PerfomanceFee: fee7,
       tokenlocked:amountstaked7,
+      bsctoken:token,
+
 
       list: [
         {
@@ -646,6 +684,7 @@ const DataTable = ({databool}) => {
       QniPerShare: share8,
       PerfomanceFee: fee8,
       tokenlocked:amountstaked8,
+      bsctoken:token,
 
       list: [
         {
@@ -971,7 +1010,7 @@ const DataTable = ({databool}) => {
                                         <div className="align-self-end">
                                           <button
                                             className="btn btn-gr-primary"
-                                            onClick={() => deposit(item.stakeorfarmid)}
+                                            onClick={() => deposit(item.stakeorfarmid, item.bsctoken)}
                                           >
                                             Harvest
                                           </button>
@@ -1190,7 +1229,7 @@ const DataTable = ({databool}) => {
                                         <div className="align-self-end">
                                           <button
                                             className="btn btn-gr-primary"
-                                            onClick={() => deposit(item.stakeorfarmid)}
+                                            onClick={() => deposit(item.stakeorfarmid, item.bsctoken)}
                                           >
                                             Harvest
                                           </button>

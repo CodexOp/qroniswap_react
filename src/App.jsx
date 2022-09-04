@@ -38,13 +38,31 @@ const BSCchainTestnet = {
   testnet: false,
 };
 
+const BscMainnet = {
+  id: 56,
+  name: "BSC - Mainnet",
+  network: "BSC",
+  iconUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Binance_Logo.png/600px-Binance_Logo.png?20201023063027",
+  iconBackground: "#fff",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Binance Smart Chain",
+    symbol: "BNB",
+  },
+  rpcUrls: {
+    default: "https://bsc-dataseed.binance.org/",
+  },
+  blockExplorers: {
+    default: { name: "BSC", url: "https://bscscan.com" },
+    etherscan: { name: "BSC", url: "https://bscscan.com" },
+  },
+  testnet: false,
+};
+
 const { chains, provider } = configureChains(
   [
     BSCchainTestnet,
-    chain.mainnet,
-    chain.polygon,
-    chain.optimism,
-    chain.arbitrum,
+    BscMainnet
   ],
   [publicProvider()]
 );
