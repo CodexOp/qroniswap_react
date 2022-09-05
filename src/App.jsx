@@ -40,7 +40,7 @@ const BSCchainTestnet = {
 
 const BscMainnet = {
   id: 56,
-  name: "BSC - Mainnet",
+  name: "Binance Smart Chain",
   network: "BSC",
   iconUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Binance_Logo.png/600px-Binance_Logo.png?20201023063027",
   iconBackground: "#fff",
@@ -61,9 +61,8 @@ const BscMainnet = {
 
 const { chains, provider } = configureChains(
   [
-    BscMainnet,
-    BSCchainTestnet,
-  ],
+    BscMainnet
+    ],
   [publicProvider()]
 );
 

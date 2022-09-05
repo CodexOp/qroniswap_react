@@ -314,7 +314,7 @@ const DataTable = () => {
       setqronibalance(qroniconverted);
     }
     catch(err){
-      console.log ("hellow",err)
+      console.log ("qroni balance error",err)
       try{
         alert(err.error.data.message);
       }
@@ -518,7 +518,7 @@ const DataTable = () => {
         },
         {
           title: "Qroni Balance",
-          content: `${qronibalance}`,
+          content: `${parseFloat(qronibalance).toFixed(4)}`,
         },
         {
           title: "APR",
@@ -553,7 +553,7 @@ const DataTable = () => {
         },
         {
           title: "VCE Balance",
-          content: `${vceBalance}`,
+          content: `${parseFloat(vceBalance).toFixed(4)}`,
         },
         {
           title: "APR",
@@ -588,7 +588,7 @@ const DataTable = () => {
         },
         {
           title: "WBNB Balance",
-          content: `${bnbBalance}`,
+          content: `${parseFloat(bnbBalance).toFixed(4)}`,
         },
         {
           title: "APR",
@@ -624,7 +624,7 @@ const DataTable = () => {
         },
         {
           title: "BTC Balance",
-          content: `${btcBalance}`,
+          content: `${parseFloat(btcBalance).toFixed(4)}`,
         },
         {
           title: "APR",
@@ -660,7 +660,7 @@ const DataTable = () => {
         },
         {
           title: "ETH Balance",
-          content: `${ethBalance}`,
+          content: `${parseFloat(ethBalance).toFixed(4)}`,
         },
         {
           title: "APR",
@@ -696,7 +696,7 @@ const DataTable = () => {
         },
         {
           title: "CAKE Balance",
-          content: `${cakeBalance}`,
+          content: `${parseFloat(cakeBalance).toFixed(4)}`,
         },
         {
           title: "APR",
