@@ -44,11 +44,11 @@ const DataTable = ({databool}) => {
   //   signerOrProvider: provider,
   // });
 
-  const [btcBalance, setBtcBalance] = useState();
-  const [ethBalance, setEthBalance] = useState();
-  const [vceBalance, setVceBalance] = useState();
-  const [cakeBalance, setCakeBalance] = useState();
-  const [bnbBalance, setBnbBalance] = useState();
+  const [btcBalance, setBtcBalance] = useState(0);
+  const [ethBalance, setEthBalance] = useState(0);
+  const [vceBalance, setVceBalance] = useState(0);
+  const [cakeBalance, setCakeBalance] = useState(0);
+  const [bnbBalance, setBnbBalance] = useState(0);
 
   const [iswalletconnected, setIswalletconnected] = useState(false);
   const [poolId, setPoolId] = useState(0);
@@ -234,6 +234,27 @@ const DataTable = ({databool}) => {
         await approve(tokens);
         let _amount = ethers.utils.parseUnits(amount.toString(), 9);
         let tx = await staking.deposit(poolId_selected, _amount);
+        let receipt = await tx.wait();
+        console.log("Stake Tx receipt: ", receipt);
+        refreshData(signer);
+    } catch (error) {
+      console.log(error);
+      try {
+        alert(error.error.data.message);
+      } catch {
+        console.log("Something went wrong, please try again!");
+      }
+    }
+  }
+
+  async function harvest(poolId_selected, tokens) {
+    try {
+      console.log (poolId_selected)
+          console.log(inputStakeAmount)
+        const amount = inputStakeAmount;
+        await approve(tokens);
+        let _amount = ethers.utils.parseUnits(amount.toString(), 9);
+        let tx = await staking.deposit(poolId_selected, '0');
         let receipt = await tx.wait();
         console.log("Stake Tx receipt: ", receipt);
         refreshData(signer);
@@ -1029,8 +1050,14 @@ const DataTable = ({databool}) => {
                                             className="btn btn-gr-primary"
                                             onClick={() => deposit(item.stakeorfarmid, item.bsctoken)}
                                           >
-                                            Harvest
+                                            Stake
                                           </button>
+                                          {parseInt((item.list[4].content).toString()) != 0 && <button
+                                            className="btn btn-gr-primary"
+                                            onClick={() => deposit(item.stakeorfarmid, item.bsctoken)}
+                                          >
+                                            Harvest
+                                          </button>}
                                         </div>
                                       </div>
                                     </ButtonBox>
@@ -1244,12 +1271,18 @@ const DataTable = ({databool}) => {
                                           <h5>$ {rewarddebt}</h5>
                                         </div>
                                         <div className="align-self-end">
-                                          <button
+                                        <button
+                                            className="btn btn-gr-primary"
+                                            onClick={() => deposit(item.stakeorfarmid, item.bsctoken)}
+                                          >
+                                            Stake
+                                          </button>
+                                          {parseInt((item.list[4].content).toString()) != 0 && <button
                                             className="btn btn-gr-primary"
                                             onClick={() => deposit(item.stakeorfarmid, item.bsctoken)}
                                           >
                                             Harvest
-                                          </button>
+                                          </button>}
                                         </div>
                                       </div>
                                     </ButtonBox>

@@ -61,8 +61,8 @@ const BscMainnet = {
 
 const { chains, provider } = configureChains(
   [
+    BscMainnet,
     BSCchainTestnet,
-    BscMainnet
   ],
   [publicProvider()]
 );
@@ -88,7 +88,7 @@ const App = () => {
   <WagmiConfig client={wagmiClient}>
                 <RainbowKitProvider
                   chains={chains}
-                  initialChain={BSCchainTestnet}
+                  initialChain={BscMainnet}
                   theme={darkTheme({
                     accentColor: '#7b3fe4',
                     accentColorForeground: 'white',
