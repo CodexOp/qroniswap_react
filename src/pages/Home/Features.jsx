@@ -33,13 +33,13 @@ const Features =()=> {
         {
             icon: Icon5,
             title: "Crypto staking",
-            content: "Stake your Qroni Tokens (QNI) in farm and syrup pools. Earn up to [%] APY.",
+            content: "Stake your Qroni Tokens (QNI) in farm and syrup pools. Earn up to 300% APY.",
         },
         {
             icon: Icon6,
             title: "NFT staking",
             content: "Stake your NFTs and idle NFT tickets, and earn passive income as you navigate Qroniswap.",
-        },
+        },  
     ]
     const Section = styled.section`
         padding: 100px 0;

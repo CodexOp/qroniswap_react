@@ -2,6 +2,13 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { CBCheckbox } from "../../styled-components";
 import Icon from "./img/qroni-icon.svg";
+import bnbicon from "./img/bnb.png";
+import vceicon from "./img/vce.png";
+import btcicon from "./img/btc.png";
+import ethicon from "./img/eth.png";
+import cakeicon from "./img/cake.png";
+import farm1icon from "./img/farm1.png";
+import farm2icon from "./img/farm2.png";
 import LinkIcon from "./img/link-icon.svg";
 import { FiSearch } from "react-icons/fi";
 import { ethers } from "ethers";
@@ -14,9 +21,9 @@ import { _nameprepTableA1 } from "@ethersproject/strings/lib/idna";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useHistory, useLocation } from 'react-router-dom';
 import { event } from "jquery";
-const DataTable = ({databool}) => {
+
+const DataTable = () => {
   const location = useLocation();
- 
   const [isOpen, setIsOpen] = useState(null);
   const [laptop, setLaptop] = useState(
     window.matchMedia("(min-width: 778px)").matches
@@ -129,9 +136,11 @@ const DataTable = ({databool}) => {
         setMyaddress(res);
       });
       getAllTokens();
+      getRewards(0)
 
       const fetch1 = async() => {
-        const {rewardDebt: rewards1, amount: amount1} = await getuserinfo(0);
+        const {reward: rewards1} = await getRewards(0);
+        const {amount: amount1} = await getuserinfo(0);
         const {depositfee: fee1, acc_qni_per_share: share1} = await getpoolinfo(0);
         setreward_pool1(rewards1)
         setamountstaked1(amount1)
@@ -140,16 +149,18 @@ const DataTable = ({databool}) => {
       }
       
       const fetch2 = async() => {
-        const {rewardDebt: rewards2, amount: amount2} = await getuserinfo(1);
+        const {reward: rewards2} = await getRewards(1);
+        const {amount: amount2} = await getuserinfo(1);
         const {depositfee: fee2, acc_qni_per_share: share2} = await getpoolinfo(1);
-        setreward_pool1(rewards2)
+        setreward_pool2(rewards2)
         setamountstaked2(amount2)
         setfee2(fee2)
         setShare2(share2)
       }
       
       const fetch3 = async() => {
-        const {rewardDebt: rewards3, amount: amount3} = await getuserinfo(2);
+        const {reward: rewards3} = await getRewards(2);
+        const {amount: amount3} = await getuserinfo(2);
         setreward_pool3(rewards3)
         setamountstaked3(amount3)
         const {depositfee: fee3, acc_qni_per_share: share3} = await getpoolinfo(2);
@@ -159,7 +170,8 @@ const DataTable = ({databool}) => {
 
 
       const fetch4 = async() => {
-        const {rewardDebt: rewards4, amount: amount4} = await getuserinfo(3);
+        const {reward: rewards4} = await getRewards(3);
+        const {amount: amount4} = await getuserinfo(3);
         setreward_pool4(rewards4)
         setamountstaked4(amount4)
         const {depositfee: fee4, acc_qni_per_share: share4} = await getpoolinfo(3);
@@ -168,7 +180,8 @@ const DataTable = ({databool}) => {
       }
 
       const fetch5 = async() => {
-        const {rewardDebt: rewards5, amount: amount5} = await getuserinfo(4);
+        const {reward: rewards5} = await getRewards(4);
+        const {amount: amount5} = await getuserinfo(4);
         setreward_pool5(rewards5)
         setamountstaked5(amount5)
         const {depositfee: fee5, acc_qni_per_share: share5} = await getpoolinfo(4);
@@ -177,7 +190,8 @@ const DataTable = ({databool}) => {
       }
 
       const fetch6 = async() => {
-      const {rewardDebt: rewards6, amount: amount6} = await getuserinfo(5);
+        const {reward: rewards6} = await getRewards(5);
+      const {amount: amount6} = await getuserinfo(5);
       setreward_pool6(rewards6)
       setamountstaked6(amount6)
       const {depositfee: fee6, acc_qni_per_share: share6} = await getpoolinfo(5);
@@ -187,7 +201,8 @@ const DataTable = ({databool}) => {
 
 
       const fetch7 = async() => {
-      const {rewardDebt: rewards7, amount: amount7} = await getuserinfo(6);
+        const {reward: rewards7} = await getRewards(6);
+      const {amount: amount7} = await getuserinfo(6);
       setreward_pool7(rewards7)
       setamountstaked7(amount7)
       const {depositfee: fee7, acc_qni_per_share: share7} = await getpoolinfo(6);
@@ -197,7 +212,8 @@ const DataTable = ({databool}) => {
       }
 
       const fetch8 = async() => {
-        const {rewardDebt: rewards8, amount: amount8} = await getuserinfo(7);
+        const {reward: rewards8} = await getRewards(7);
+        const {amount: amount8} = await getuserinfo(7);
         setreward_pool8(rewards8)
         setamountstaked8(amount8)
         const {depositfee: fee8, acc_qni_per_share: share8} = await getpoolinfo(7);
@@ -310,6 +326,9 @@ const DataTable = ({databool}) => {
     
   }
 
+
+
+
   async function getAllTokens() {
       try {
        
@@ -365,6 +384,12 @@ const DataTable = ({databool}) => {
 
 
 
+
+  async function getRewards(poolids){
+    var rewards_fetched = await staking.pendingQNI(poolids, signer.getAddress());
+    const reward = ethers.utils.formatUnits(rewards_fetched, 9);
+    return {reward}
+  }
 
 
 
@@ -480,6 +505,8 @@ const DataTable = ({databool}) => {
       PerfomanceFee: fee1,
       tokenlocked:amountstaked1,
       bsctoken:token,
+      qroniEarned:reward_pool1,
+
 
       list: [
         {
@@ -502,7 +529,7 @@ const DataTable = ({databool}) => {
           content: `${amountstaked1}`,
         },
         {
-          title: "Earned",
+          title: "Qroni Earned",
           content: `${reward_pool1}`,
         },
       ],
@@ -512,12 +539,13 @@ const DataTable = ({databool}) => {
       stakeorfarmid:1,
       QniPerShare: share2,
       PerfomanceFee: fee2,
-      tokenlocked:amountstaked1,
+      tokenlocked:amountstaked2,
       bsctoken:vceContract,
+      qroniEarned:reward_pool2,
 
       list: [
         {
-          icon: Icon,
+          icon: vceicon,
         },
         {
           title: "Earn Qroni",
@@ -536,7 +564,7 @@ const DataTable = ({databool}) => {
           content: `${amountstaked2}`,
         },
         {
-          title: "Earned",
+          title: "Qroni Earned",
           content: `${reward_pool2}`,
         },
       ],
@@ -548,10 +576,11 @@ const DataTable = ({databool}) => {
       PerfomanceFee: fee3,
       tokenlocked:amountstaked3,
       bsctoken:bnbContract,
+      qroniEarned:reward_pool3,
 
       list: [
         {
-          icon: Icon,
+          icon: bnbicon,
         },
         {
           title: "Earn Qroni",
@@ -570,7 +599,7 @@ const DataTable = ({databool}) => {
           content: `${amountstaked3}`,
         },
         {
-          title: "Earned",
+          title: "Qroni Earned",
           content: `${reward_pool3}`,
         },
       ],
@@ -582,11 +611,12 @@ const DataTable = ({databool}) => {
       PerfomanceFee: fee4,
       tokenlocked:amountstaked4,
       bsctoken:btcContract,
+      qroniEarned:reward_pool4,
 
 
       list: [
         {
-          icon: Icon,
+          icon: btcicon,
         },
         {
           title: "Earn Qroni",
@@ -605,7 +635,7 @@ const DataTable = ({databool}) => {
           content: `${amountstaked4}`,
         },
         {
-          title: "Earned",
+          title: "Qroni Earned",
           content: `${reward_pool4}`,
         },
       ],
@@ -617,11 +647,12 @@ const DataTable = ({databool}) => {
       PerfomanceFee: fee5,
       tokenlocked:amountstaked5,
       bsctoken:ethContract,
+      qroniEarned:reward_pool8,
 
 
       list: [
         {
-          icon: Icon,
+          icon: ethicon,
         },
         {
           title: "Earn Qroni",
@@ -640,7 +671,7 @@ const DataTable = ({databool}) => {
           content: `${amountstaked5}`,
         },
         {
-          title: "Earned",
+          title: "Qroni Earned",
           content: `${reward_pool5}`,
         },
       ],
@@ -652,11 +683,12 @@ const DataTable = ({databool}) => {
       PerfomanceFee: fee6,
       tokenlocked:amountstaked6,
       bsctoken:cakeContract,
+      qroniEarned:reward_pool6,
 
 
       list: [
         {
-          icon: Icon,
+          icon: cakeicon,
         },
         {
           title: "Earn Qroni",
@@ -675,7 +707,7 @@ const DataTable = ({databool}) => {
           content: `${amountstaked6}`,
         },
         {
-          title: "Earned",
+          title: "Qroni Earned",
           content: `${reward_pool6}`,
         },
       ],
@@ -689,11 +721,12 @@ const DataTable = ({databool}) => {
       PerfomanceFee: fee7,
       tokenlocked:amountstaked7,
       bsctoken:token,
+      qroniEarned:reward_pool7,
 
 
       list: [
         {
-          icon: Icon,
+          icon: farm1icon,
         },
         {
           title: "Earn Qroni",
@@ -712,7 +745,7 @@ const DataTable = ({databool}) => {
           content: `${amountstaked7}`,
         },
         {
-          title: "Earned",
+          title: "Qroni Earned",
           content: `${reward_pool7}`,
         },
       ],
@@ -724,10 +757,11 @@ const DataTable = ({databool}) => {
       PerfomanceFee: fee8,
       tokenlocked:amountstaked8,
       bsctoken:token,
+      qroniEarned:reward_pool8,
 
       list: [
         {
-          icon: Icon,
+          icon: farm2icon,
         },
         {
           title: "Earn Qroni",
@@ -746,7 +780,7 @@ const DataTable = ({databool}) => {
           content: `${amountstaked8}`,
         },
         {
-          title: "Earned",
+          title: "Qroni Earned",
           content: `${reward_pool8}`,
         },
       ],
@@ -914,7 +948,7 @@ const DataTable = ({databool}) => {
                               {item.list &&
                                 item.list.slice(0, 2).map((sub, subIdx) => (
                                   <td
-                                    key={subIdx}
+                                  key={subIdx}
                                     className={sub.icon ? "pe-0" : "text-start"}
                                     width={sub.icon ? 53 : ""}
                                     colSpan={sub.icon ? 1 : 5}
@@ -928,7 +962,6 @@ const DataTable = ({databool}) => {
                                 ))}
                             </tr>
                             <tr
-                              key={i}
                               onClick={
                                 isOpen !== null && isOpen === i
                                   ? onClickRowCloseHandle
@@ -939,7 +972,7 @@ const DataTable = ({databool}) => {
                                 item.list.slice(2, 5).map((sub, subIdx) => (
                                   // {item.list && item.list.map((sub, subIdx) =>(
                                   <td
-                                    key={subIdx}
+                                  key={subIdx}
                                     className={sub.icon ? "pe-0" : ""}
                                     width={sub.icon ? 53 : ""}
                                   >
@@ -954,7 +987,6 @@ const DataTable = ({databool}) => {
                           </>
                         ) : (
                           <tr
-                            key={i}
                             onClick={
                               isOpen !== null && isOpen === i
                                 ? onClickRowCloseHandle
@@ -996,7 +1028,7 @@ const DataTable = ({databool}) => {
                                 <div className="col">
                                   <div className="d-flex align-items-start flex-column gap-1">
                                     <div>
-                                      <a
+                                    <a
                                         href="#"
                                         className="text-gr-primary text-nowrap"
                                       >
@@ -1044,7 +1076,7 @@ const DataTable = ({databool}) => {
                                       <div className="d-flex flex-wrap gap-2 gap-lg-4">
                                         <div>
                                           <h6>Qroni Earned</h6>
-                                          <h5>$ {rewarddebt}</h5>
+                                          <h5>{parseFloat(item.qroniEarned).toFixed(2)}</h5>
                                         </div>
                                         <div className="align-self-end">
                                           <button
@@ -1139,7 +1171,7 @@ const DataTable = ({databool}) => {
                               {item.list &&
                                 item.list.slice(0, 2).map((sub, subIdx) => (
                                   <td
-                                    key={subIdx}
+                                  key={subIdx}
                                     className={sub.icon ? "pe-0" : "text-start"}
                                     width={sub.icon ? 53 : ""}
                                     colSpan={sub.icon ? 1 : 5}
@@ -1153,7 +1185,6 @@ const DataTable = ({databool}) => {
                                 ))}
                             </tr>
                             <tr
-                              key={i}
                               onClick={
                                 isOpen !== null && isOpen === i
                                   ? onClickRowCloseHandle
@@ -1164,7 +1195,8 @@ const DataTable = ({databool}) => {
                                 item.list.slice(2, 5).map((sub, subIdx) => (
                                   // {item.list && item.list.map((sub, subIdx) =>(
                                   <td
-                                    key={subIdx}
+                                  key={subIdx}
+
                                     className={sub.icon ? "pe-0" : ""}
                                     width={sub.icon ? 53 : ""}
                                   >
@@ -1179,7 +1211,6 @@ const DataTable = ({databool}) => {
                           </>
                         ) : (
                           <tr
-                            key={i}
                             onClick={
                               isOpen !== null && isOpen === i
                                 ? onClickRowCloseHandle
@@ -1190,7 +1221,7 @@ const DataTable = ({databool}) => {
                               item.list.map((sub, subIdx) => (
                                 // {item.list && item.list.map((sub, subIdx) =>(
                                 <td
-                                  key={subIdx}
+                                key={subIdx}
                                   className={sub.icon ? "pe-0" : ""}
                                   width={sub.icon ? 53 : ""}
                                 >
@@ -1269,7 +1300,7 @@ const DataTable = ({databool}) => {
                                       <div className="d-flex flex-wrap gap-2 gap-lg-4">
                                         <div>
                                           <h6>Qroni Earned</h6>
-                                          <h5>{rewarddebt}</h5>
+                                          <h5>{item.qroniEarned}</h5>
                                         </div>
                                         <div className="align-self-end">
                                         <button

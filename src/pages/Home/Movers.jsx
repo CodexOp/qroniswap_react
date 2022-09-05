@@ -46,28 +46,36 @@ const Movers = () => {
   const list = [
     {
       icon: Icon1,
+      name:"Bitcoin",
       title: "BTC",
       badge: "np",
       count: btc,
       progress: btc24h,
+      link:"https://coinmarketcap.com/currencies/bitcoin/"
     },
     {
       icon: Icon2,
+      name:"Ethereum",
       title: "ETH",
       count: eth,
       progress: eth24h,
+      link:"https://coinmarketcap.com/currencies/ethereum/"
     },
     {
       icon: Icon3,
+      name:"Binance",
       title: "BNB",
       count: bnb,
       progress: bnb24h,
+      link:"https://coinmarketcap.com/currencies/bnb/"
     },
     {
       icon: Icon4,
+      name:"Tether",
       title: "USDT",
       count: usdt,
       progress: usdt24h,
+      link:"https://coinmarketcap.com/currencies/tether/",
     },
   ];
 
@@ -154,15 +162,16 @@ const Movers = () => {
         <div className="row g-4">
           {list &&
             list.map((item, i) => (
+
               <div key={i} className="col-xl-3 col-lg-6 col-md-6">
                 <Box>
                   <BoxHead>
                     <img src={item.icon} alt="" />
                     <div className="box-text">
                       <h4>{item.title}</h4>
-                      <span className="badge">BitCoin</span>
+                      <span className="badge">{item.name}</span>
                     </div>
-                    <a href="#" className="link-img">
+                    <a href={item.link} className="link-img" target="_blank" rel="noreferrer">
                       <svg
                         width="48"
                         height="48"

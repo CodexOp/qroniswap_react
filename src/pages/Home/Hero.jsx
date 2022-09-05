@@ -88,6 +88,23 @@ const Hero = () => {
                 Whitepaper
               </a>
             </div>
+            <div className="hero-area-buttons d-flex justify-content-center gap-3 threeandfourth">
+            <a
+                href="https://swap.qroni.io"
+                className="btn btn-light whitepaper_btn"
+                target="_blank" rel="noreferrer"
+              >
+                Swap
+              </a>
+
+              <a
+                href="https://nft.qroni.io"
+                className="btn btn-light nft_btn"
+                target="_blank" rel="noreferrer"
+              >
+                NFT
+              </a>
+            </div>
           </div>
         </div>
       </div>

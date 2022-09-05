@@ -39,7 +39,7 @@ const Stats = () => {
       console.log(error);
     }
   }
-  async function totalvolume() {
+  async function totalSupply() {
     try {
       let rpcUrl = value.rpcUrl;
       let provider_ = new ethers.providers.JsonRpcProvider(rpcUrl);
@@ -107,7 +107,7 @@ const Stats = () => {
     marketcap();
     totalvallocked();
     fetchprice();
-    totalvolume();
+    totalSupply();
   }, []);
 
   const list = [

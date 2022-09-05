@@ -21,6 +21,14 @@
     border-radius: 8px;
   }
 
+
+  .nft_btn{
+    background: var(--gr-primary) !important;
+    border-radius: 8px;
+    margin-left: 20px;
+    border: none !important;
+  }
+
   .info_token div{
     min-height: 130px !important;
     padding: 30px 10px !important;
@@ -50,6 +58,10 @@
     margin-bottom: 5px;
     width: 100%;
 
+  }
+
+  .threeandfourth{
+    margin-top: 20px;
   }
 
  

@@ -42,7 +42,7 @@ const TextImage =()=> {
             banner: PoolBanner3,
             button: {
                 label: "Start minting tickets",
-                cMingSoon: "Coming Soon",
+                cMingSoon: "",
                 url: "https://nft.qroni.io"
             },
             list: [

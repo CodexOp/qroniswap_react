@@ -7,33 +7,32 @@ const Roadmap =()=> {
             title: "Stage1",
             class: "col-lg-4 order-lg-3 dot-top",
             list: [
-                { name: "Web application launch", },
-                { name: "DEX token listings", },
-                { name: "Private NFT sale", },
-                { name: "Beta testing", },
-                { name: "Mobile app launch", },
-                { name: "Multi-layer ID integration", },
-                { name: "Qroni launchpad Integration", },
-            ]
-        },
-        {
-            title: "Stage2",
-            class: "col-lg-5  order-lg-1 offset-lg-2",
-            list: [
                 { name: "Multi-chain DEX partnership & integration", },
                 { name: "Fiat on-ramp integration", }, 
                 { name: "Raffle draw", },
             ]
         },
         {
-            title: "Stage3",
-            class: "col-lg-6 order-lg-4 offset-lg-2 dot-top",
+            title: "Stage2",
+            class: "col-lg-5  order-lg-1 offset-lg-2",
             list: [
                 { name: "CEX listing", },
                 { name: "NFT series launch", },
                 { name: "QroniLock launch", },
                 { name: "NFT ticketing", },
                 { name: "Ethereum and Solana cross-chain launch", },
+            ]
+        },
+        {
+            title: "Stage3",
+            class: "col-lg-6 order-lg-4 offset-lg-2 dot-top",
+            list: [
+                { name: "Web application launch", },
+                { name: "DEX token listings", },
+                { name: "Beta testing", },
+                { name: "Mobile app launch", },
+                { name: "Multi-layer ID integration", },
+                { name: "Qroni launchpad Integration", },
             ]
         },
         {
