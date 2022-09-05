@@ -298,12 +298,13 @@ const DataTable = ({databool}) => {
       setqronibalance(qroniconverted);
     }
     catch(err){
+      console.log ("hellow",err)
       try{
         alert(err.error.data.message);
       }
 
       catch{
-        alert('Something Went Wro')
+        
       }
     }
     
@@ -1268,7 +1269,7 @@ const DataTable = ({databool}) => {
                                       <div className="d-flex flex-wrap gap-2 gap-lg-4">
                                         <div>
                                           <h6>Qroni Earned</h6>
-                                          <h5>$ {rewarddebt}</h5>
+                                          <h5>{rewarddebt}</h5>
                                         </div>
                                         <div className="align-self-end">
                                         <button
