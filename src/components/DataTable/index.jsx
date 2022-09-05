@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { CBCheckbox } from "../../styled-components";
-import Icon from "./img/qroni-icon.svg";
 import bnbicon from "./img/bnb.png";
-import vceicon from "./img/vce.png";
+import qroniicon from "./img/qroni.png";
 import btcicon from "./img/btc.png";
+import vceicon from "./img/vce.png";
 import ethicon from "./img/eth.png";
 import cakeicon from "./img/cake.png";
 import farm1icon from "./img/farm1.png";
@@ -502,7 +502,7 @@ const DataTable = () => {
       id: 1,
       stakeorfarmid:0,
       QniPerShare: share1,
-      PerfomanceFee: fee1,
+      DepositFee: "2%",
       tokenlocked:amountstaked1,
       bsctoken:token,
       qroniEarned:reward_pool1,
@@ -510,7 +510,7 @@ const DataTable = () => {
 
       list: [
         {
-          icon: Icon,
+          icon: qroniicon,
         },
         {
           title: "Earn Qroni",
@@ -538,7 +538,7 @@ const DataTable = () => {
       id: 2,
       stakeorfarmid:1,
       QniPerShare: share2,
-      PerfomanceFee: fee2,
+      DepositFee: "4%",
       tokenlocked:amountstaked2,
       bsctoken:vceContract,
       qroniEarned:reward_pool2,
@@ -573,7 +573,7 @@ const DataTable = () => {
       id: 3,
       stakeorfarmid:2,
       QniPerShare: share3,
-      PerfomanceFee: fee3,
+      DepositFee: "4%",
       tokenlocked:amountstaked3,
       bsctoken:bnbContract,
       qroniEarned:reward_pool3,
@@ -608,7 +608,7 @@ const DataTable = () => {
       id: 4,
       stakeorfarmid:3,
       QniPerShare: share4,
-      PerfomanceFee: fee4,
+      DepositFee: "4%",
       tokenlocked:amountstaked4,
       bsctoken:btcContract,
       qroniEarned:reward_pool4,
@@ -644,7 +644,7 @@ const DataTable = () => {
       id: 5,
       stakeorfarmid:4,
       QniPerShare: share5,
-      PerfomanceFee: fee5,
+      DepositFee: "4%",
       tokenlocked:amountstaked5,
       bsctoken:ethContract,
       qroniEarned:reward_pool8,
@@ -680,7 +680,7 @@ const DataTable = () => {
       id: 6,
       stakeorfarmid:5,
       QniPerShare: share6,
-      PerfomanceFee: fee6,
+      DepositFee: "4%",
       tokenlocked:amountstaked6,
       bsctoken:cakeContract,
       qroniEarned:reward_pool6,
@@ -700,7 +700,7 @@ const DataTable = () => {
         },
         {
           title: "APR",
-          content: "150%",
+          content: "170%",
         },
         {
           title: "Total Staked",
@@ -718,7 +718,7 @@ const DataTable = () => {
       id: 1,
       stakeorfarmid:6,
       QniPerShare: share7,
-      PerfomanceFee: fee7,
+      DepositFee: "4%",
       tokenlocked:amountstaked7,
       bsctoken:token,
       qroniEarned:reward_pool7,
@@ -754,7 +754,7 @@ const DataTable = () => {
       id: 8,
       stakeorfarmid:7,
       QniPerShare: share8,
-      PerfomanceFee: fee8,
+      DepositFee: "4%",
       tokenlocked:amountstaked8,
       bsctoken:token,
       qroniEarned:reward_pool8,
@@ -1022,7 +1022,7 @@ const DataTable = () => {
                                     <ListHeading>
                                       Qni Per Share: {item.QniPerShare} 
                                     </ListHeading>
-                                    <ListHeading>Performance Fee: {item.PerfomanceFee}</ListHeading>
+                                    <ListHeading>Deposit Fee: {item.DepositFee}</ListHeading>
                                   </div>
                                 </div>
                                 <div className="col">
@@ -1246,7 +1246,7 @@ const DataTable = () => {
                                     <ListHeading>
                                       Qni Per Share: {item.QniPerShare} 
                                     </ListHeading>
-                                    <ListHeading>Performance Fee: {item.PerfomanceFee}</ListHeading>
+                                    <ListHeading>Deposit Fee: {item.DepositFee}</ListHeading>
                                   </div>
                                 </div>
                                 <div className="col">

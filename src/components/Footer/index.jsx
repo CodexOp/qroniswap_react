@@ -46,7 +46,7 @@ const Footer =()=> {
                     title: 'Audits',
                 },
                 {
-                    slug: 'apply-for-listing',
+                    slug: 'https://docs.google.com/forms/d/e/1FAIpQLScVjMXxEvvM3wKFd4tB6s1xgNpzL6VqKaWCtKLdaWZYbMA9eQ/viewform?usp=sf_link',
                     title: 'Apply for listing',
                 },
             ]

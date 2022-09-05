@@ -21,11 +21,18 @@
     border-radius: 8px;
   }
 
+  .btn_extra{
+    padding: 8px 50px !important;
+    border-radius: 8px;
+    background: #fff;
+    margin-left: 0 !important;
+  }
 
   .nft_btn{
     background: var(--gr-primary) !important;
     border-radius: 8px;
-    margin-left: 20px;
+    margin-left: 15px;
+    padding: 8px 50px !important;
     border: none !important;
   }
 
